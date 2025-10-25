@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Rapôso Web Dev - https://portfolioraposoofc.vercel.app/">
+    <meta name="description" content="Forno à Lenha Pizzaria - Cardápio Completo.">
+    <title>Cardápio | Forno à Lenha</title>
+    <link rel="stylesheet" href="../css/cardapio.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../icon/fornoalenha.ico" type="image/x-icon">
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <img id="icone" src="../imgs/fornoalenha.webp" alt="Ícone da logo da Forno à Lenha Pizzaria.">
+      </div>
+      <div>
+        <h1>Forno a Lenha</h1>
+        <span>Pizzaria</span>
+      </div>
+    </div>
+
+    <div class="cart-trigger" id="open-cart">
+      🛒 <span id="cart-count">0</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-text">
+        <h2>Cardápio</h2>
+        <p>Monte sua pizza ou escolha uma bebida. Carrinho mantém tudo salvo enquanto você navega 😉</p>
+        <button class="btn btn-primary" id="btn-monte-pizza">🍕 Monte sua pizza</button>
+      </div>
+      <div class="hero-art" aria-hidden="true">🍕</div>
+    </section>
+
+    <!-- PIZZAS INFO -->
+    <section class="tabelas">
+      <div class="tabela">
+        <h3>Pizzas Tradicionais</h3>
+        <ul>
+          <li>Brotinho: <strong>R$ 19,90</strong></li>
+          <li>Média: <strong>R$ 36,90</strong></li>
+          <li>Grande: <strong>R$ 46,90</strong></li>
+        </ul>
+      </div>
+      <div class="tabela">
+        <h3>Pizzas Especiais</h3>
+        <ul>
+          <li>Brotinho: <strong>R$ 29,90</strong></li>
+          <li>Média: <strong>R$ 48,90</strong></li>
+          <li>Grande: <strong>R$ 58,90</strong></li>
+        </ul>
+      </div>
+      <div class="tabela">
+        <h3>Pizzas Doces</h3>
+        <ul>
+          <li>Média: <strong>R$ 38,90</strong></li>
+          <li>Grande: <strong>R$ 48,90</strong></li>
+          <li class="muted">Brotinho: —</li>
+        </ul>
+      </div>
+      <div class="tabela">
+        <h3>Borda Recheada</h3>
+        <ul>
+          <li>Média: <strong>R$ 11,90</strong></li>
+          <li>Grande: <strong>R$ 14,90</strong></li>
+          <li class="muted">Brotinho: —</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- BEBIDAS -->
+    <section class="secao" id="bebidas">
+      <h2>Refrigerantes</h2>
+      <div class="cards" id="cards-bebidas">
+        <div class="card">
+          <h3>Coca-Cola 1L</h3>
+          <p>Refrigerante Coca-Cola 1 Litro.</p>
+          <span class="price">R$ 8,90</span>
+          <button class="btn btn-add" onclick="addToCart('Coca-Cola 1L', 8.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Guaraná 1L</h3>
+          <p>Refrigerante Guaraná 1 Litro.</p>
+          <span class="price">R$ 6,90</span>
+          <button class="btn btn-add" onclick="addToCart('Guaraná 1L', 6.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Pepsi 1L</h3>
+          <p>Refrigerante Pepsi 1 Litro.</p>
+          <span class="price">R$ 6,90</span>
+          <button class="btn btn-add" onclick="addToCart('Pepsi 1L', 6.90, 1)">Adicionar</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CARRINHO (drawer) -->
+  <aside class="cart" id="cart">
+    <div class="cart-header">
+      <h3>Seu Carrinho</h3>
+      <button class="icon-btn" id="close-cart" title="Fechar">✖</button>
+    </div>
+    <div id="cart-items" class="cart-items"></div>
+
+    <!-- ENTREGA / DADOS DO CLIENTE -->
+    <div class="cart-form">
+      <h4>Entrega</h4>
+      <div class="field inline">
+        <label><input type="radio" name="modo-entrega" value="retirada" checked> Retirada no balcão</label>
+        <label><input type="radio" name="modo-entrega" value="delivery"> Delivery</label>
+      </div>
+
+      <div id="delivery-fields" class="delivery-fields hidden">
+        <div class="field">
+          <label for="bairro">Bairro</label>
+          <select id="bairro"></select>
+          <small class="hint">A taxa de entrega é aplicada conforme o bairro.</small>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="rua">Rua / Avenida</label>
+            <input type="text" id="rua" placeholder="Ex.: Rua das Flores" />
+          </div>
+          <div class="field">
+            <label for="numero">Número</label>
+            <input type="text" id="numero" placeholder="123" />
+          </div>
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="complemento">Complemento</label>
+            <input type="text" id="complemento" placeholder="Casa, Apto, Bloco..." />
+          </div>
+          <div class="field">
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" placeholder="00000-000" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="referencia">Ponto de referência</label>
+          <input type="text" id="referencia" placeholder="Próximo à praça..." />
+        </div>
+      </div>
+
+      <h4>Contato</h4>
+      <div class="grid">
+        <div class="field">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="Seu nome" />
+        </div>
+        <div class="field">
+          <label for="telefone">Telefone (WhatsApp)</label>
+          <input type="text" id="telefone" placeholder="(00) 90000-0000" />
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="linha">
+        <span>Subtotal</span><strong id="cart-subtotal">R$ 0,00</strong>
+      </div>
+      <div class="linha">
+        <span>Taxa de Entrega</span><strong id="cart-fees">R$ 0,00</strong>
+      </div>
+      <div class="linha total">
+        <span>Total</span><strong id="cart-total">R$ 0,00</strong>
+      </div>
+      <button class="btn btn-primary" id="btn-finalizar">Finalizar pelo WhatsApp</button>
+      <p class="pix-tip">💳 Aceitamos Pix.</p>
+    </div>
+  </aside>
+
+  <!-- MODAL: MONTE SUA PIZZA -->
+  <div id="pizza-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Monte sua Pizza</h3>
+        <button class="icon-btn" id="close-modal" title="Fechar">✖</button>
+      </div>
+
+      <form id="pizza-form">
+        <!-- Tamanho -->
+        <fieldset>
+          <legend>Tamanho</legend>
+          <div class="options" id="tamanho-options"><!-- via JS --></div>
+          <small class="hint" id="hint-precos-familia">Selecione um tamanho para ver os preços por família.</small>
+        </fieldset>
+
+        <!-- Sabores -->
+        <fieldset>
+          <legend>Sabores (até 2)</legend>
+          <div id="sabor-options"><!-- via JS --></div>
+          <small class="hint">Pode escolher até 2 sabores (meio a meio). O valor considera o maior preço entre as famílias selecionadas.</small>
+        </fieldset>
+
+        <!-- Borda -->
+        <fieldset>
+          <legend>Borda Recheada</legend>
+          <div class="options" id="borda-options"><!-- via JS --></div>
+          <small class="hint">Borda disponível apenas para tamanhos Média e Grande.</small>
+        </fieldset>
+
+        <!-- Resumo de Preço -->
+        <div class="resumo">
+          <div><span>Pizza</span><strong id="pizza-subtotal">R$ 0,00</strong></div>
+          <div><span>Adicional de Borda</span><strong id="borda-adicional">R$ 0,00</strong></div>
+          <div class="total"><span>Total</span><strong id="pizza-final-price">R$ 0,00</strong></div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">Adicionar ao Carrinho</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="rodape">
+    <p>Forno a Lenha Pizzaria — entregue quentinha na sua casa.</p>
+  </footer>
+
+  <script src="../js/script.js"></script>
+</body>
+</html>
