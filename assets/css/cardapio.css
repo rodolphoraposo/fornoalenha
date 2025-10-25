@@ -8,6 +8,7 @@
 }
 
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 html,body{
   min-height:100%;
   overflow-y:auto;
@@ -15,24 +16,44 @@ html,body{
 }
 body{
   margin:0;
-  font:16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans";
+  font:16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
   background:var(--bg);
   color:var(--text);
 }
 /* trava o fundo quando cart/modal estiverem abertos */
 body.lock-scroll{height:100%;overflow:hidden}
 
-/* Topbar */
-.topbar{
-  position:sticky; top:0; z-index:10;
+/* Header fixo com efeito vidro (transparência + blur) */
+.topbar.glass{
+  position:sticky; top:0; z-index:100;
   display:flex; align-items:center; justify-content:space-between;
-  padding:12px 16px; background:#0b0c0f; border-bottom:1px solid var(--line);
+  padding:10px 16px;
+  backdrop-filter: saturate(180%) blur(10px);
+  background: rgba(11,12,15,0.55);
+  border-bottom:1px solid var(--line);
 }
-.brand{display:flex; gap:12px; align-items:center}
+.topbar.glass.scrolled{ background:rgba(11,12,15,0.8); }
+
+.brand{display:flex; gap:12px; align-items:center; text-decoration:none; color:inherit}
 .logo{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
-.brand h1{margin:0;font-size:18px}
+.brand h1{margin:0;font-size:20px}
 .brand span{font-size:12px;color:var(--muted)}
+
+/* NAV */
+.main-nav{display:flex; gap:10px; align-items:center;}
+.main-nav .nav-link{
+  display:flex; align-items:center; gap:6px;
+  padding:8px 10px; border-radius:10px;
+  color:var(--text); text-decoration:none;
+  border:1px solid transparent;
+}
+.main-nav .nav-link:hover{ background:#191b22; border-color:var(--line);}
+.main-nav .nav-link.active{ outline:2px solid var(--acc); background:#231c0a; }
+
 .cart-trigger{cursor:pointer;user-select:none;border:1px solid var(--line);padding:6px 10px;border-radius:10px;background:#121319}
+
+/* espaço para o header não cobrir o início das seções ao navegar por âncora */
+section, .tabelas { scroll-margin-top: 76px; }
 
 /* Layout base */
 .container{max-width:1100px;margin:24px auto;padding:0 16px}
@@ -78,19 +99,13 @@ body.lock-scroll{height:100%;overflow:hidden}
 .cart{
   position:fixed; right:-420px; top:0;
   width:380px;
-
-  /* alturas com fallbacks p/ vários browsers */
-  height:100vh;          /* fallback */
-  height:100svh;         /* iOS/Android barra dinâmica */
-  height:100dvh;         /* viewport dinâmica moderna */
-
+  height:100vh; height:100svh; height:100dvh;
   background:#0c0d11; border-left:1px solid var(--line);
   transition:right .25s ease; z-index:30;
 
   display:flex; flex-direction:column;
 
-  /* agora o drawer inteiro rola */
-  overflow-y:auto;
+  overflow-y:auto;            /* o drawer inteiro rola */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
@@ -105,7 +120,7 @@ body.lock-scroll{height:100%;overflow:hidden}
 }
 .icon-btn{cursor:pointer;border:none;background:#1a1b22;border-radius:8px;color:#fff;padding:8px}
 
-/* como o contêiner agora rola, os blocos internos não precisam de overflow */
+/* blocos internos */
 .cart-items{padding:12px;display:flex;flex-direction:column;gap:10px}
 .cart-item{background:#13141a;border:1px solid var(--line);border-radius:12px;padding:10px}
 .cart-item .title{font-weight:600}
@@ -138,8 +153,7 @@ body.lock-scroll{height:100%;overflow:hidden}
 .modal-content{
   background:#0e1016;border:1px solid var(--line);border-radius:16px;max-width:760px;width:100%;
   padding:0;
-  max-height:90dvh;               /* rolagem dentro do modal */
-  overflow:auto; -webkit-overflow-scrolling: touch;
+  max-height:90dvh;overflow:auto;-webkit-overflow-scrolling:touch;
 }
 .modal-header{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
 .modal-content form{padding:12px 14px}
@@ -172,6 +186,7 @@ legend{padding:0 6px;color:#d7dae1}
   .field input,.field select{padding:12px}
   .cart-item{padding:12px}
   .modal-content{max-width:96vw}
+  .main-nav .nav-link span{display:none}
 }
 
 /* telas muito estreitas (< 440px) – tipografia mais compacta */

@@ -3,16 +3,15 @@
  *************************************************/
 
 // Número do WhatsApp no formato internacional (ex.: Brasil 55 + DDD + número)
-// Exemplo abaixo (substitua pelo seu):
-const WHATSAPP_NUMBER = "5582994336126";
+const WHATSAPP_NUMBER = "5588999999999"; // <— troque pelo seu
 
 // Tabela de taxas de entrega por bairro (edite conforme sua área)
 const TAXAS_ENTREGA = {
-  "São Jorge": 6.00,
-  "Serraria": 3.00,
-  "Feitosa": 7.00,
-  "Jacintinho": 8.00,
-  "Antares": 5.00
+  "Centro": 5.00,
+  "Jardim": 7.00,
+  "Industrial": 9.00,
+  "Universitário": 11.00,
+  "Zona Rural": 15.00
 };
 
 
@@ -81,6 +80,7 @@ const cartFees     = document.getElementById('cart-fees');
 const cartTotal    = document.getElementById('cart-total');
 const cartCount    = document.getElementById('cart-count');
 const btnFinalizar = document.getElementById('btn-finalizar');
+const btnContinuar = document.getElementById('btn-continuar');
 
 const btnMontePizza = document.getElementById('btn-monte-pizza');
 const pizzaModal    = document.getElementById('pizza-modal');
@@ -103,12 +103,32 @@ const inputReferencia = document.getElementById('referencia');
 const inputNome = document.getElementById('nome');
 const inputTelefone = document.getElementById('telefone');
 
+// Header / Nav
+const header = document.getElementById('site-header');
+const navLinks = document.querySelectorAll('.main-nav .nav-link');
+
+
+/*************************************************
+ *  NAV & HEADER EFFECTS
+ *************************************************/
+window.addEventListener('scroll', () => {
+  if (!header) return;
+  header.classList.toggle('scrolled', window.scrollY > 6);
+});
+navLinks.forEach(a => {
+  a.addEventListener('click', () => {
+    navLinks.forEach(n => n.classList.remove('active'));
+    a.classList.add('active');
+    if (cartDrawer?.classList.contains('open')) closeCart();
+    document.body.classList.remove('lock-scroll');
+  });
+});
+
 
 /*************************************************
  *  INICIALIZAÇÃO — CAMPOS DE ENTREGA
  *************************************************/
 (function initDeliveryFields() {
-  // Popula bairros
   if (selectBairro) {
     selectBairro.innerHTML = `<option value="">Selecione...</option>` + 
       Object.entries(TAXAS_ENTREGA).map(([b, v]) =>
@@ -116,7 +136,6 @@ const inputTelefone = document.getElementById('telefone');
       ).join("");
   }
 
-  // Modo de entrega
   radiosModoEntrega.forEach(r => {
     r.addEventListener('change', () => {
       deliveryState.modo = r.value;
@@ -128,11 +147,10 @@ const inputTelefone = document.getElementById('telefone');
         deliveryState.bairro = null;
         if (selectBairro) selectBairro.value = "";
       }
-      renderCart(); // atualiza total e taxa
+      renderCart();
     });
   });
 
-  // Campos de endereço
   selectBairro?.addEventListener('change', () => {
     const bairro = selectBairro.value || null;
     deliveryState.bairro = bairro;
@@ -170,34 +188,27 @@ function renderGrupoSabores(titulo, lista, familia) {
 }
 
 function populatePizzaOptions() {
-  // Tamanhos
   tamanhoOptionsEl.innerHTML = TAMANHOS.map((t) => `
     <input type="radio" id="tamanho-${t}" name="tamanho" value="${t}" ${t==="Grande" ? "checked" : ""}>
     <label for="tamanho-${t}">${t}</label>
   `).join('');
 
-  // Sabores (grupos)
   saborOptionsEl.innerHTML = `
     ${renderGrupoSabores("Tradicionais", SABORES.Tradicional, "Tradicional")}
     ${renderGrupoSabores("Especiais", SABORES.Especial, "Especial")}
     ${renderGrupoSabores("Doces", SABORES.Doce, "Doce")}
   `;
 
-  // Bordas
   bordaOptionsEl.innerHTML = BORDAS.map((b, i) => `
     <input type="radio" id="borda-${i}" name="borda" value="${b}" ${b === "Nenhuma" ? "checked" : ""}>
     <label for="borda-${i}">${b}</label>
   `).join('');
 
-  // Eventos de mudança
   pizzaForm.querySelectorAll('input').forEach(input => {
     input.addEventListener('change', handlePizzaChange);
   });
 
-  // Preços por família (tamanho selecionado)
   updateHintPrecosFamilia();
-
-  // Cálculo inicial
   handlePizzaChange();
 }
 
@@ -263,7 +274,6 @@ function calculatePizzaPrice() {
   let tamanho = selectedTamanho ? selectedTamanho.value : null;
   let borda   = selectedBorda   ? selectedBorda.value   : "Nenhuma";
 
-  // Subtotal da pizza (sem borda)
   let subtotalPizza = 0;
   let tituloPizza   = "Pizza - Escolha os Sabores";
 
@@ -313,29 +323,23 @@ function calculatePizzaPrice() {
 function saveCart() {
   localStorage.setItem("cart_fornoalenha", JSON.stringify(cart));
 }
-
 function formatBRL(v) {
   return `R$ ${v.toFixed(2)}`;
 }
-
 function addToCart(name, price, qty = 1, meta = {}) {
   const key = JSON.stringify({ name, price, meta });
   const existing = cart.find(i => JSON.stringify({ name: i.name, price: i.price, meta: i.meta }) === key);
 
-  if (existing) {
-    existing.qty += qty;
-  } else {
-    cart.push({ name, price, qty, meta });
-  }
+  if (existing) existing.qty += qty;
+  else cart.push({ name, price, qty, meta });
+
   renderCart();
   openCart();
 }
-
 function removeFromCart(index) {
   cart.splice(index, 1);
   renderCart();
 }
-
 function changeQty(index, delta) {
   cart[index].qty += delta;
   if (cart[index].qty <= 0) cart.splice(index, 1);
@@ -379,7 +383,6 @@ function renderCart() {
     cartItemsEl.appendChild(el);
   });
 
-  // Atualiza subtotal, taxa e total
   const taxa = deliveryState.modo === "delivery" ? (deliveryState.taxa || 0) : 0;
   const total = subtotal + taxa;
 
@@ -442,13 +445,9 @@ function montarMensagemWhatsApp() {
 }
 
 function validarDadosAntesDeEnviar() {
-  if (!cart.length) {
-    alert('Seu carrinho está vazio.');
-    return false;
-  }
+  if (!cart.length) { alert('Seu carrinho está vazio.'); return false; }
   if (!deliveryState.nome || !deliveryState.telefone) {
-    alert('Informe seu nome e telefone (WhatsApp).');
-    return false;
+    alert('Informe seu nome e telefone (WhatsApp).'); return false;
   }
   if (deliveryState.modo === "delivery") {
     if (!deliveryState.bairro) { alert('Selecione o bairro para calcular a taxa de entrega.'); return false; }
@@ -470,13 +469,16 @@ function closeCart(){
   document.body.classList.remove('lock-scroll'); // libera fundo
 }
 
-
 openCartBtn?.addEventListener('click', openCart);
 closeCartBtn?.addEventListener('click', closeCart);
 
+btnContinuar?.addEventListener('click', () => {
+  closeCart();
+  document.querySelector('#home')?.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
 btnFinalizar?.addEventListener('click', () => {
   if (!validarDadosAntesDeEnviar()) return;
-
   const texto = montarMensagemWhatsApp();
   const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`;
   window.open(url, '_blank');
@@ -485,31 +487,25 @@ btnFinalizar?.addEventListener('click', () => {
 /* Modal Monte sua Pizza */
 btnMontePizza?.addEventListener('click', () => {
   pizzaModal.classList.add('open');
-  document.body.classList.add('lock-scroll'); // trava fundo
+  document.body.classList.add('lock-scroll');   // trava fundo
   populatePizzaOptions();
 });
 closeModalBtn?.addEventListener('click', () => {
   pizzaModal.classList.remove('open');
-  document.body.classList.remove('lock-scroll'); // libera fundo
+  document.body.classList.remove('lock-scroll');
 });
 pizzaModal?.addEventListener('click', (e) => {
   if (e.target === pizzaModal){
     pizzaModal.classList.remove('open');
     document.body.classList.remove('lock-scroll');
-  } 
-    
+  }
 });
 
 /* Submit da pizza */
 pizzaForm?.addEventListener('submit', (e) => {
   e.preventDefault();
   const { precoFinal, nomePizza, tamanho, borda, sabores } = calculatePizzaPrice();
-
-  if (precoFinal <= 0) {
-    alert('Escolha pelo menos 1 sabor e um tamanho válido.');
-    return;
-  }
-
+  if (precoFinal <= 0) { alert('Escolha pelo menos 1 sabor e um tamanho válido.'); return; }
   const meta = { tamanho, borda, sabores };
   addToCart(`${nomePizza} (${tamanho})`, precoFinal, 1, meta);
   pizzaModal.classList.remove('open');
