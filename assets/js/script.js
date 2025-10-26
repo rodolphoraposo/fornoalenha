@@ -1,22 +1,17 @@
 /*************************************************
- *  CONFIGURAÇÃO — AJUSTE PARA SEU NEGÓCIO
+ * CONFIGURAÇÃO — AJUSTE PARA SEU NEGÓCIO
  *************************************************/
 
 // Número do WhatsApp no formato internacional (ex.: Brasil 55 + DDD + número)
 const WHATSAPP_NUMBER = "5588999999999"; // <— troque pelo seu
 
-// Tabela de taxas de entrega por bairro (edite conforme sua área)
-const TAXAS_ENTREGA = {
-  "Centro": 5.00,
-  "Jardim": 7.00,
-  "Industrial": 9.00,
-  "Universitário": 11.00,
-  "Zona Rural": 15.00
-};
+// Chave PIX da empresa para o cliente copiar
+const PIX_KEY = "11.222.333/0001-44"; // <— troque pela sua chave PIX CNPJ/CPF/Telefone
 
+// Taxas de entrega removidas, pois a taxa é R$ 0,00
 
 /*************************************************
- *  DADOS DO CARDÁPIO
+ * DADOS DO CARDÁPIO
  *************************************************/
 
 // Preços das pizzas por família e tamanho
@@ -51,32 +46,37 @@ const TAMANHOS = ["Brotinho", "Média", "Grande"];
 
 
 /*************************************************
- *  ESTADO GLOBAL
+ * ESTADO GLOBAL
  *************************************************/
 let cart = JSON.parse(localStorage.getItem("cart_fornoalenha") || "[]");
 const deliveryState = {
   modo: "retirada", // retirada | delivery
-  bairro: null,
-  taxa: 0,
   nome: "",
   telefone: "",
   rua: "",
   numero: "",
   complemento: "",
   cep: "",
-  referencia: ""
+  referencia: "",
+  bairro: "", // Mantido para campos de endereço
+  
+  // NOVOS CAMPOS PARA PAGAMENTO
+  formaPagamento: "dinheiro", // dinheiro | debito | credito | pix
+  valorPago: 0,
+  precisaTroco: false,
+  trocoPara: 0
 };
 
 
 /*************************************************
- *  ELEMENTOS
+ * ELEMENTOS
  *************************************************/
 const cartDrawer   = document.getElementById('cart');
 const openCartBtn  = document.getElementById('open-cart');
 const closeCartBtn = document.getElementById('close-cart');
 const cartItemsEl  = document.getElementById('cart-items');
 const cartSubtotal = document.getElementById('cart-subtotal');
-const cartFees     = document.getElementById('cart-fees');
+// const cartFees     = document.getElementById('cart-fees'); // REMOVIDO
 const cartTotal    = document.getElementById('cart-total');
 const cartCount    = document.getElementById('cart-count');
 const btnFinalizar = document.getElementById('btn-finalizar');
@@ -94,7 +94,7 @@ const hintPrecosFamilia = document.getElementById('hint-precos-familia');
 // Campos de entrega/contato
 const radiosModoEntrega = document.querySelectorAll('input[name="modo-entrega"]');
 const deliveryFieldsBox = document.getElementById('delivery-fields');
-const selectBairro = document.getElementById('bairro');
+// const selectBairro = document.getElementById('bairro'); // Removido por não ter taxa
 const inputRua = document.getElementById('rua');
 const inputNumero = document.getElementById('numero');
 const inputComplemento = document.getElementById('complemento');
@@ -102,6 +102,15 @@ const inputCep = document.getElementById('cep');
 const inputReferencia = document.getElementById('referencia');
 const inputNome = document.getElementById('nome');
 const inputTelefone = document.getElementById('telefone');
+const inputBairro = document.getElementById('bairro'); // Bairro vira campo de texto
+
+// NOVOS ELEMENTOS DE PAGAMENTO
+const radiosFormaPagamento = document.querySelectorAll('input[name="forma-pagamento"]');
+const dinheiroFields = document.getElementById('dinheiro-fields');
+const pixFields = document.getElementById('pix-fields');
+const pixKeyEl = document.getElementById('pix-key');
+const inputTroco = document.getElementById('troco-para');
+const checkboxTroco = document.getElementById('precisa-troco');
 
 // Header / Nav
 const header = document.getElementById('site-header');
@@ -109,7 +118,7 @@ const navLinks = document.querySelectorAll('.main-nav .nav-link');
 
 
 /*************************************************
- *  NAV & HEADER EFFECTS
+ * NAV & HEADER EFFECTS
  *************************************************/
 window.addEventListener('scroll', () => {
   if (!header) return;
@@ -126,16 +135,21 @@ navLinks.forEach(a => {
 
 
 /*************************************************
- *  INICIALIZAÇÃO — CAMPOS DE ENTREGA
+ * INICIALIZAÇÃO — CAMPOS DE ENTREGA E PAGAMENTO
  *************************************************/
-(function initDeliveryFields() {
-  if (selectBairro) {
-    selectBairro.innerHTML = `<option value="">Selecione...</option>` + 
-      Object.entries(TAXAS_ENTREGA).map(([b, v]) =>
-        `<option value="${b}">${b} — R$ ${v.toFixed(2)}</option>`
-      ).join("");
+(function initDeliveryAndPaymentFields() {
+  
+  // Inicialização PIX
+  if (pixKeyEl) {
+    pixKeyEl.textContent = PIX_KEY;
+    // Adiciona evento de clique para copiar a chave PIX
+    pixKeyEl.parentElement.addEventListener('click', () => {
+      navigator.clipboard.writeText(PIX_KEY);
+      alert("Chave PIX copiada para a área de transferência!");
+    });
   }
 
+  // Inicialização Entrega
   radiosModoEntrega.forEach(r => {
     r.addEventListener('change', () => {
       deliveryState.modo = r.value;
@@ -143,21 +157,13 @@ navLinks.forEach(a => {
         deliveryFieldsBox.classList.remove('hidden');
       } else {
         deliveryFieldsBox.classList.add('hidden');
-        deliveryState.taxa = 0;
-        deliveryState.bairro = null;
-        if (selectBairro) selectBairro.value = "";
       }
       renderCart();
     });
   });
 
-  selectBairro?.addEventListener('change', () => {
-    const bairro = selectBairro.value || null;
-    deliveryState.bairro = bairro;
-    deliveryState.taxa = bairro ? (TAXAS_ENTREGA[bairro] || 0) : 0;
-    renderCart();
-  });
-
+  // Captura de dados de entrega e contato
+  inputBairro?.addEventListener('input', e => deliveryState.bairro = e.target.value);
   inputRua?.addEventListener('input', e => deliveryState.rua = e.target.value);
   inputNumero?.addEventListener('input', e => deliveryState.numero = e.target.value);
   inputComplemento?.addEventListener('input', e => deliveryState.complemento = e.target.value);
@@ -165,11 +171,58 @@ navLinks.forEach(a => {
   inputReferencia?.addEventListener('input', e => deliveryState.referencia = e.target.value);
   inputNome?.addEventListener('input', e => deliveryState.nome = e.target.value);
   inputTelefone?.addEventListener('input', e => deliveryState.telefone = e.target.value);
+  
+  // Inicialização Pagamento
+  radiosFormaPagamento.forEach(r => {
+    r.addEventListener('change', () => {
+      deliveryState.formaPagamento = r.value;
+      dinheiroFields.classList.add('hidden');
+      pixFields.classList.add('hidden');
+      
+      // Reseta campos de troco
+      deliveryState.precisaTroco = false;
+      deliveryState.trocoPara = 0;
+      if (checkboxTroco) checkboxTroco.checked = false;
+      if (inputTroco) inputTroco.value = "";
+      
+      if (r.value === "dinheiro") {
+        dinheiroFields.classList.remove('hidden');
+      } else if (r.value === "pix") {
+        pixFields.classList.remove('hidden');
+      }
+      renderCart();
+    });
+  });
+  
+  // Lógica de Troco
+  checkboxTroco?.addEventListener('change', e => {
+    deliveryState.precisaTroco = e.target.checked;
+    if (!e.target.checked) {
+      deliveryState.trocoPara = 0;
+      if (inputTroco) inputTroco.value = "";
+    }
+    if (inputTroco) inputTroco.disabled = !e.target.checked;
+  });
+  
+  inputTroco?.addEventListener('input', e => {
+    // Garante que o valor digitado é um número maior ou igual ao total
+    let valor = parseFloat(e.target.value.replace(',', '.')) || 0;
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0); // Subtotal é o total, já que a taxa é 0
+    
+    if (valor < total && valor !== 0) {
+      alert(`O valor deve ser maior ou igual ao total do pedido: ${formatBRL(total)}`);
+      e.target.value = total.toFixed(2).replace('.', ',');
+      valor = total;
+    }
+    
+    deliveryState.trocoPara = valor;
+  });
+  
 })();
 
 
 /*************************************************
- *  UI DO MODAL — MONTE SUA PIZZA
+ * UI DO MODAL — MONTE SUA PIZZA
  *************************************************/
 function renderGrupoSabores(titulo, lista, familia) {
   const itens = lista.map((nome, i) => `
@@ -231,7 +284,7 @@ function updateHintPrecosFamilia() {
 
 
 /*************************************************
- *  LÓGICA DE PIZZA
+ * LÓGICA DE PIZZA
  *************************************************/
 function getSelectedTamanho() {
   const r = pizzaForm.querySelector('input[name="tamanho"]:checked');
@@ -318,7 +371,7 @@ function calculatePizzaPrice() {
 
 
 /*************************************************
- *  CARRINHO
+ * CARRINHO
  *************************************************/
 function saveCart() {
   localStorage.setItem("cart_fornoalenha", JSON.stringify(cart));
@@ -383,11 +436,11 @@ function renderCart() {
     cartItemsEl.appendChild(el);
   });
 
-  const taxa = deliveryState.modo === "delivery" ? (deliveryState.taxa || 0) : 0;
-  const total = subtotal + taxa;
+  // A taxa de entrega é zero, logo o Total é igual ao Subtotal
+  const total = subtotal;
 
   cartSubtotal.textContent = formatBRL(subtotal);
-  cartFees.textContent     = formatBRL(taxa);
+  // cartFees.textContent = formatBRL(0); // Removido
   cartTotal.textContent    = formatBRL(total);
   cartCount.textContent    = cart.reduce((s,i)=>s+i.qty,0);
 
@@ -396,7 +449,7 @@ function renderCart() {
 
 
 /*************************************************
- *  FINALIZAÇÃO VIA WHATSAPP
+ * FINALIZAÇÃO VIA WHATSAPP
  *************************************************/
 function montarMensagemWhatsApp() {
   const linhas = [];
@@ -413,14 +466,35 @@ function montarMensagemWhatsApp() {
   });
 
   const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const taxa = deliveryState.modo === "delivery" ? (deliveryState.taxa || 0) : 0;
-  const total = subtotal + taxa;
+  const total = subtotal;
 
   linhas.push("");
   linhas.push(`Subtotal: *${formatBRL(subtotal)}*`);
-  linhas.push(`Taxa de entrega: *${formatBRL(taxa)}*`);
+  // linhas.push(`Taxa de entrega: *${formatBRL(0)}*`); // Removido
   linhas.push(`Total: *${formatBRL(total)}*`);
   linhas.push("");
+  
+  // Detalhes da Forma de Pagamento
+  linhas.push("*Forma de Pagamento:*");
+  if (deliveryState.formaPagamento === "dinheiro") {
+    linhas.push(`• Dinheiro`);
+    if (deliveryState.precisaTroco) {
+      const troco = deliveryState.trocoPara - total;
+      linhas.push(`• Precisa de troco para: *${formatBRL(deliveryState.trocoPara)}*`);
+      linhas.push(`• Troco a ser devolvido: *${formatBRL(troco)}*`);
+    } else {
+      linhas.push(`• Não precisa de troco.`);
+    }
+  } else if (deliveryState.formaPagamento === "debito") {
+    linhas.push(`• Cartão de Débito (Máquina na entrega)`);
+  } else if (deliveryState.formaPagamento === "credito") {
+    linhas.push(`• Cartão de Crédito (Máquina na entrega)`);
+  } else if (deliveryState.formaPagamento === "pix") {
+    linhas.push(`• PIX (Comprovante será enviado em seguida)`);
+    linhas.push(`• Chave PIX da empresa: ${PIX_KEY}`);
+  }
+  linhas.push("");
+
 
   linhas.push(`*Entrega:* ${deliveryState.modo === "delivery" ? "Delivery" : "Retirada no balcão"}`);
 
@@ -450,15 +524,33 @@ function validarDadosAntesDeEnviar() {
     alert('Informe seu nome e telefone (WhatsApp).'); return false;
   }
   if (deliveryState.modo === "delivery") {
-    if (!deliveryState.bairro) { alert('Selecione o bairro para calcular a taxa de entrega.'); return false; }
-    if (!deliveryState.rua || !deliveryState.numero) { alert('Informe rua/avenida e número.'); return false; }
+    if (!deliveryState.rua || !deliveryState.numero || !deliveryState.bairro) { 
+        alert('Informe o Bairro, Rua/Avenida e número para a entrega.'); return false; 
+    }
   }
+  
+  // Validação de Troco
+  if (deliveryState.formaPagamento === "dinheiro" && deliveryState.precisaTroco) {
+      const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+      if (deliveryState.trocoPara < total) {
+          alert('O valor para troco deve ser maior ou igual ao total do pedido.');
+          return false;
+      }
+  }
+  
+  // Confirmação para PIX
+  if (deliveryState.formaPagamento === "pix") {
+      if (!confirm("Você selecionou PIX. Certifique-se de que o pagamento será feito ANTES de enviar o pedido. Deseja continuar?")) {
+          return false;
+      }
+  }
+  
   return true;
 }
 
 
 /*************************************************
- *  EVENTOS GERAIS
+ * EVENTOS GERAIS
  *************************************************/
 function openCart(){
   cartDrawer.classList.add('open');

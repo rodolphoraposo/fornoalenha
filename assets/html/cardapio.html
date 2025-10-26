@@ -29,7 +29,7 @@
     <nav class="main-nav" aria-label="Navegação principal">
       <a class="nav-link" href="#pizzas" data-target="pizzas" title="Pizzas">🍕</a>
       <a class="nav-link" href="#sushi"  data-target="sushi"  title="Sushis">🍣</a>
-      <a class="nav-link" href="#esfirras"  data-target="esfirras"  title="Esfirras">🥟</a>
+      <a class="nav-link" href="#esfirra"  data-target="esfirras"  title="Esfirras">🥟</a>
       <a class="nav-link" href="#bebidas"data-target="bebidas"title="Bebidas">🥤</a>
     </nav>
 
@@ -191,6 +191,78 @@
         </div>
       </div>
     </section>
+    
+    <!-- ESFIRRAS -->
+    <section class="secao" id="esfirra">
+      <h2 style="margin:18px 0 10px">Tradicionais <small style="color:#8b8d94"></small></h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Mista</h3>
+          <img src="../imgs/esfirrami.webp" alt="Esfiha Mista." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 3,90</span>
+          <button class="btn btn-add" onclick="addToCart('Esfiha Mista', 3.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Frango</h3>
+          <img src="../imgs/esfirrafr.webp" alt="Temaki de Salmão Grelhado." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 3,90</span>
+          <button class="btn btn-add" onclick="addToCart('Temaki de Salmão Grelhado', 3.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Mussarela</h3>
+          <img src="../imgs/esfirramu.webp" alt="Temaki de Polvo." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 3,90</span>
+          <button class="btn btn-add" onclick="addToCart('Temaki de Polvo', 3.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Carne Moída</h3>
+          <img src="../imgs/esfirracn.webp" alt="Temaki de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 3,90</span>
+          <button class="btn btn-add" onclick="addToCart('Temaki de Camarão', 3.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Calabresa</h3>
+          <img src="../imgs/esfirracb.webp" alt="Temaki de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 3,90</span>
+          <button class="btn btn-add" onclick="addToCart('Temaki de Camarão', 3.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Marguerita</h3>
+          <img src="../imgs/esfirramg.webp" alt="Temaki de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 3,90</span>
+          <button class="btn btn-add" onclick="addToCart('Temaki de Camarão', 3.90, 1)">Adicionar</button>
+        </div>
+      </div>
+      </div>
+
+      <h2 style="margin:18px 0 10px">Especiais<small style="color:#8b8d94"></small></h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Camarão</h3>
+          <img src="../imgs/esfirracm.webp" alt="Esfiha de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 4,90</span>
+          <button class="btn btn-add" onclick="addToCart('Esfiha de Camarão', 4.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Carne de Sol</h3>
+          <img src="../imgs/esfirracs.webp" alt="Esfiha de Carne de Sol." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 4,90</span>
+          <button class="btn btn-add" onclick="addToCart('Esfiha de Carne de Sol', 4.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Frango com Catupiry</h3>
+          <img src="../imgs/esfirrafc.webp" alt="Esfiha de Frango com Catupiry." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 4,90</span>
+          <button class="btn btn-add" onclick="addToCart('Esfiha Frango com Catupiry', 4.90, 1)">Adicionar</button>
+        </div>
+        <div class="card">
+          <h3>Quatro Queijos</h3>
+          <img src="../imgs/esfirraqq.webp" alt="Esfiha de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
+          <span class="price">R$ 4,90</span>
+          <button class="btn btn-add" onclick="addToCart('Esfiha Quatro Queijos', 4.90, 1)">Adicionar</button>
+        </div>
+      </div>
+    </section>
 
     <!-- BEBIDAS -->
     <section class="secao" id="bebidas">
@@ -225,13 +297,6 @@
 
   <!-- CARRINHO (drawer) -->
   <aside class="cart" id="cart">
-    <div class="cart-header">
-      <h3>Seu Carrinho</h3>
-      <button class="icon-btn" id="close-cart" title="Fechar">✖</button>
-    </div>
-
-    <div id="cart-items" class="cart-items"></div>
-
     <!-- ENTREGA / DADOS DO CLIENTE -->
     <div class="cart-form">
       <h4>Entrega</h4>
@@ -241,11 +306,13 @@
       </div>
 
       <div id="delivery-fields" class="delivery-fields hidden">
+        
         <div class="field">
           <label for="bairro">Bairro</label>
-          <select id="bairro"></select>
-          <small class="hint">A taxa de entrega é aplicada conforme o bairro.</small>
+          <input type="text" id="bairro" placeholder="Seu bairro" />
+          <small class="hint">Entrega grátis!</small>
         </div>
+        
         <div class="grid">
           <div class="field">
             <label for="rua">Rua / Avenida</label>
@@ -283,14 +350,44 @@
           <input type="text" id="telefone" placeholder="(00) 90000-0000" />
         </div>
       </div>
+      
+      <h4>Pagamento</h4>
+      <div class="field inline" style="flex-wrap: wrap;">
+        <label><input type="radio" name="forma-pagamento" value="dinheiro" checked> Dinheiro</label>
+        <label><input type="radio" name="forma-pagamento" value="debito"> Débito</label>
+        <label><input type="radio" name="forma-pagamento" value="credito"> Crédito</label>
+        <label><input type="radio" name="forma-pagamento" value="pix"> PIX</label>
+      </div>
+
+      <div id="dinheiro-fields">
+        <div class="field">
+          <label>
+            <input type="checkbox" id="precisa-troco"> Precisa de troco?
+          </label>
+        </div>
+        <div class="field">
+          <label for="troco-para">Troco para quanto?</label>
+          <input type="text" id="troco-para" placeholder="Ex: 50,00" disabled />
+          <small class="hint">O valor deve ser igual ou superior ao total do pedido.</small>
+        </div>
+      </div>
+      
+      <div id="pix-fields" class="hidden">
+        <div class="field">
+          <small class="hint">Copie e cole a chave abaixo no seu aplicativo bancário. Envie o comprovante pelo WhatsApp.</small>
+        </div>
+        <div class="field">
+          <label for="pix-key">Chave PIX (Clique para copiar)</label>
+          <input type="text" id="pix-key" readonly style="cursor: pointer; background: #333; color: #ffb10a;" />
+        </div>
+      </div>
+      
+      
     </div>
 
     <div class="cart-footer">
       <div class="linha">
         <span>Subtotal</span><strong id="cart-subtotal">R$ 0,00</strong>
-      </div>
-      <div class="linha">
-        <span>Taxa de Entrega</span><strong id="cart-fees">R$ 0,00</strong>
       </div>
       <div class="linha total">
         <span>Total</span><strong id="cart-total">R$ 0,00</strong>
@@ -298,7 +395,7 @@
 
       <button class="btn" id="btn-continuar" type="button">← Continuar comprando</button>
       <button class="btn btn-primary" id="btn-finalizar">Finalizar pelo WhatsApp</button>
-      <p class="pix-tip">💳 Aceitamos Pix.</p>
+      <p class="pix-tip">💳 Aceitamos Pix, Débito e Crédito.</p>
     </div>
   </aside>
 

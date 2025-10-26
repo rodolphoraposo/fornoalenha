@@ -48,7 +48,7 @@ body.lock-scroll {
   border-bottom:1px solid var(--line);
 }
 
-.topbar .glass .scrolled {
+.topbar.glass.scrolled {
   background:rgba(11,12,15,0.8);
 }
 
@@ -90,11 +90,12 @@ body.lock-scroll {
   display:flex;
   align-items:center;
   gap:6px;
-  padding:8px 10px;
+  padding:8px 50px;
   border-radius:10px;
   color:var(--text);
   text-decoration:none;
   border:1px solid transparent;
+  font-size: 2rem;
 }
 
 .main-nav .nav-link:hover {
@@ -114,6 +115,7 @@ body.lock-scroll {
   padding:6px 10px;
   border-radius:10px;
   background:#121319;
+  font-size: 1.5rem;
 }
 
 /* espaço para o header não cobrir o início das seções ao navegar por âncora */
@@ -271,7 +273,7 @@ section .tabelas {
   overscroll-behavior: contain;
 }
 
-.cart .open {
+.cart.open {
   right:0;
 }
 
@@ -371,7 +373,7 @@ section .tabelas {
   font-size:14px;
 }
 
-.field input .field select {
+.field input, .field select {
   background:#12131a;
   border:1px solid var(--line);
   border-radius:8px;color:#fff;
@@ -486,7 +488,7 @@ legend {
   background:#151722;
   color:#e8e9ee;
   padding:8px 10px;
-  border-radius:10px;
+  border-radius:4px;
   cursor:pointer;
   user-select:none;
 }
@@ -570,5 +572,4 @@ legend {
 #icone {
   width: 80px;
   height: 80px;
-  margin: 0 50px;
 }
