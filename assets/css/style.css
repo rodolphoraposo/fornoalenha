@@ -10,7 +10,6 @@
 
 /* Container principal */
 body {
-  background: #f8f8f8;
   color: #111;
   line-height: 1.5;
   min-height: 100vh;
@@ -33,10 +32,8 @@ body::before {
   background-image: url("../imgs/background.webp");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
-  
-  filter: blur(6px) brightness(0.85);
-  background-color: #f8f8f8;
+  background-position: center center;  
+  filter: blur(3.5px) brightness(0.5);
   
   z-index: -1;
 }
@@ -85,9 +82,8 @@ body::before {
 }
 
 #profile img {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 5px;
+  width: 220px;
+  height: 220px;
   object-fit: cover;
 }
 
