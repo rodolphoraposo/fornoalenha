@@ -209,30 +209,20 @@ section .tabelas {
   margin:0 0 12px 0;
 }
 
-/* Cards de itens (Layout de Grade Responsivo) */
-.cards { 
-  display: grid; 
+/* Cards de itens (Ponto 4: Layout Flex com Scroll Horizontal) */
+.cards {
+  display: flex; 
   gap: 16px;
-  /* Desktop e maiores: 3 colunas por vez */
-  grid-template-columns: repeat(3, 1fr); 
-  padding-bottom: 0; /* Remove padding de scroll */
-}
-
-/* Novo estilo para a imagem do produto */
-.card-img {
-    width: 100%;
-    /* Altura fixa para manter a consistência e dar espaço para a imagem */
-    height: 180px; 
-    object-fit: cover;
-    border-radius: 10px;
-    /* Placeholder visual para a imagem */
-    background: #20222b; 
-    border: 1px dashed var(--line);
-    margin-bottom: 8px; /* Espaçamento entre foto e nome/conteúdo */
+  overflow-x: scroll; 
+  padding-bottom: 20px; 
+  -webkit-overflow-scrolling: touch; 
+  scroll-snap-type: x mandatory; 
 }
 
 .card{
-  /* As propriedades de flex-shrink, width, scroll-snap-align foram removidas/ignoradas */
+  flex-shrink: 0; 
+  width: 280px; 
+  scroll-snap-align: start; 
   
   background:var(--card);
   border:1px solid var(--line);
@@ -272,10 +262,6 @@ section .tabelas {
   background:#2c2f39;
   color:#fff;
   border:1px solid var(--line);
-}
-
-#btn-monte-pizza {
-  font-size: 1rem;
 }
 
 /* =========================================
@@ -532,9 +518,33 @@ legend {
 
 .options-grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  /* Garante no mínimo 2 e no máximo 4 colunas em telas grandes */
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); 
   gap:8px;
 }
+
+/* Estilos para a label e imagem do sabor dentro do modal (NOVO) */
+.modal-content .options-grid label {
+    display: flex;
+    flex-direction: column; /* Coloca a imagem acima do nome */
+    align-items: center;
+    justify-content: center;
+    height: 100%; /* Ocupa a altura total da grade */
+    text-align: center;
+    padding: 6px; /* Ajusta padding interno */
+    font-size: 14px; /* Otimiza o tamanho da fonte para o card pequeno */
+}
+
+/* Estilo para a imagem do sabor no modal (NOVO) */
+.sabor-img {
+    width: 100%;
+    height: 80px; 
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 4px; /* Espaço entre a imagem e o nome */
+    background: #20222b; /* Placeholder */
+}
+
 
 .grupo-sabores strong {
   display:block;
@@ -574,13 +584,6 @@ legend {
 }
 
 /* Responsivo */
-@media (max-width:992px) { /* Tablets (e telas menores que desktop) */
-  .cards {
-    /* Tablet: 2 cards por vez */
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width:760px){
   .hero{grid-template-columns:1fr}
   .hero-art{display:none}
@@ -620,14 +623,22 @@ legend {
     color: var(--muted);
   }
   
-  /* Ponto 4: Cards em bloco (mobile) */
-  .cards {
-    grid-template-columns: 1fr; /* 1 coluna em tela cheia */
+  /* Ponto 4: Cards com scroll (mobile) */
+  .card {
+    width: 85vw; /* Ocupa 85% da largura da viewport para forçar a rolagem e mostrar 1 por vez */
   }
   
   /* Ajusta o padding do conteúdo principal no mobile */
   .container {
     padding-top: 100px;
+  }
+  
+  /* Ajusta grid de sabores para 2 colunas em telas pequenas */
+  .options-grid {
+    grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); 
+  }
+  .sabor-img {
+    height: 60px; /* Reduz a altura da imagem no mobile */
   }
 }
 
@@ -647,13 +658,4 @@ legend {
   width: 80px;
   height: 80px;
   margin: 0 50px;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  font-size: 0.9rem;
-  color: #d1d5db;
 }
