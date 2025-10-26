@@ -5,8 +5,8 @@
 // Número do WhatsApp no formato internacional (ex.: Brasil 55 + DDD + número)
 const WHATSAPP_NUMBER = "5588999999999"; // <— troque pelo seu
 
-// Chave PIX da empresa para o cliente copiar
-const PIX_KEY = "11.222.333/0001-44"; // <— troque pela sua chave PIX CNPJ/CPF/Telefone
+// Chave PIX da empresa para o cliente copiar (CNPJ fornecido: 59.130.875/0001-50)
+const PIX_KEY = "59.130.875/0001-50"; // <— CORRIGIDO com o CNPJ do Rapôso
 
 // Taxas de entrega removidas, pois a taxa é R$ 0,00
 
@@ -58,7 +58,7 @@ const deliveryState = {
   complemento: "",
   cep: "",
   referencia: "",
-  bairro: "", // Mantido para campos de endereço
+  bairro: "", // Bairro vira campo de texto
   
   // NOVOS CAMPOS PARA PAGAMENTO
   formaPagamento: "dinheiro", // dinheiro | debito | credito | pix
@@ -76,7 +76,7 @@ const openCartBtn  = document.getElementById('open-cart');
 const closeCartBtn = document.getElementById('close-cart');
 const cartItemsEl  = document.getElementById('cart-items');
 const cartSubtotal = document.getElementById('cart-subtotal');
-// const cartFees     = document.getElementById('cart-fees'); // REMOVIDO
+// const cartFees     = document.getElementById('cart-fees'); // Removido
 const cartTotal    = document.getElementById('cart-total');
 const cartCount    = document.getElementById('cart-count');
 const btnFinalizar = document.getElementById('btn-finalizar');
@@ -94,7 +94,6 @@ const hintPrecosFamilia = document.getElementById('hint-precos-familia');
 // Campos de entrega/contato
 const radiosModoEntrega = document.querySelectorAll('input[name="modo-entrega"]');
 const deliveryFieldsBox = document.getElementById('delivery-fields');
-// const selectBairro = document.getElementById('bairro'); // Removido por não ter taxa
 const inputRua = document.getElementById('rua');
 const inputNumero = document.getElementById('numero');
 const inputComplemento = document.getElementById('complemento');
@@ -104,8 +103,8 @@ const inputNome = document.getElementById('nome');
 const inputTelefone = document.getElementById('telefone');
 const inputBairro = document.getElementById('bairro'); // Bairro vira campo de texto
 
-// NOVOS ELEMENTOS DE PAGAMENTO
-const radiosFormaPagamento = document.querySelectorAll('input[name="forma-pagamento"]');
+// NOVOS ELEMENTOS DE PAGAMENTO (Ponto 2: Select)
+const selectFormaPagamento = document.getElementById('forma-pagamento-select');
 const dinheiroFields = document.getElementById('dinheiro-fields');
 const pixFields = document.getElementById('pix-fields');
 const pixKeyEl = document.getElementById('pix-key');
@@ -139,9 +138,9 @@ navLinks.forEach(a => {
  *************************************************/
 (function initDeliveryAndPaymentFields() {
   
-  // Inicialização PIX
+  // Inicialização PIX (CNPJ)
   if (pixKeyEl) {
-    pixKeyEl.textContent = PIX_KEY;
+    pixKeyEl.value = PIX_KEY; // <== Aplica o CNPJ
     // Adiciona evento de clique para copiar a chave PIX
     pixKeyEl.parentElement.addEventListener('click', () => {
       navigator.clipboard.writeText(PIX_KEY);
@@ -172,27 +171,27 @@ navLinks.forEach(a => {
   inputNome?.addEventListener('input', e => deliveryState.nome = e.target.value);
   inputTelefone?.addEventListener('input', e => deliveryState.telefone = e.target.value);
   
-  // Inicialização Pagamento
-  radiosFormaPagamento.forEach(r => {
-    r.addEventListener('change', () => {
-      deliveryState.formaPagamento = r.value;
-      dinheiroFields.classList.add('hidden');
-      pixFields.classList.add('hidden');
-      
-      // Reseta campos de troco
-      deliveryState.precisaTroco = false;
-      deliveryState.trocoPara = 0;
-      if (checkboxTroco) checkboxTroco.checked = false;
-      if (inputTroco) inputTroco.value = "";
-      
-      if (r.value === "dinheiro") {
-        dinheiroFields.classList.remove('hidden');
-      } else if (r.value === "pix") {
-        pixFields.classList.remove('hidden');
-      }
-      renderCart();
-    });
-  });
+  // Inicialização Pagamento (Ponto 2: Lógica para o Select)
+  if (selectFormaPagamento) {
+      selectFormaPagamento.addEventListener('change', (e) => {
+          deliveryState.formaPagamento = e.target.value;
+          dinheiroFields.classList.add('hidden');
+          pixFields.classList.add('hidden');
+          
+          // Reseta campos de troco
+          deliveryState.precisaTroco = false;
+          deliveryState.trocoPara = 0;
+          if (checkboxTroco) checkboxTroco.checked = false;
+          if (inputTroco) inputTroco.value = "";
+          
+          if (deliveryState.formaPagamento === "dinheiro") {
+              dinheiroFields.classList.remove('hidden');
+          } else if (deliveryState.formaPagamento === "pix") {
+              pixFields.classList.remove('hidden');
+          }
+          renderCart();
+      });
+  }
   
   // Lógica de Troco
   checkboxTroco?.addEventListener('change', e => {
@@ -207,10 +206,10 @@ navLinks.forEach(a => {
   inputTroco?.addEventListener('input', e => {
     // Garante que o valor digitado é um número maior ou igual ao total
     let valor = parseFloat(e.target.value.replace(',', '.')) || 0;
-    const total = cart.reduce((s,i)=>s+i.price*i.qty,0); // Subtotal é o total, já que a taxa é 0
+    const total = cart.reduce((s,i)=>s+i.price*i.qty,0); 
     
     if (valor < total && valor !== 0) {
-      alert(`O valor deve ser maior ou igual ao total do pedido: ${formatBRL(total)}`);
+      // Ajusta o valor
       e.target.value = total.toFixed(2).replace('.', ',');
       valor = total;
     }
@@ -356,9 +355,9 @@ function calculatePizzaPrice() {
   const subtotal = Math.round(subtotalPizza * 100) / 100;
   const total    = Math.round((subtotal + adicionalBorda) * 100) / 100;
 
-  document.getElementById('pizza-subtotal').textContent     = `R$ ${subtotal.toFixed(2)}`;
-  document.getElementById('borda-adicional').textContent    = `R$ ${adicionalBorda.toFixed(2)}`;
-  document.getElementById('pizza-final-price').textContent  = `R$ ${total.toFixed(2)}`;
+  document.getElementById('pizza-subtotal').textContent     = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+  document.getElementById('borda-adicional').textContent    = `R$ ${adicionalBorda.toFixed(2).replace('.', ',')}`;
+  document.getElementById('pizza-final-price').textContent  = `R$ ${total.toFixed(2).replace('.', ',')}`;
 
   return {
     precoFinal: total,
@@ -377,7 +376,7 @@ function saveCart() {
   localStorage.setItem("cart_fornoalenha", JSON.stringify(cart));
 }
 function formatBRL(v) {
-  return `R$ ${v.toFixed(2)}`;
+  return `R$ ${v.toFixed(2).replace('.', ',')}`; // Ponto 5: Formato BRL com vírgula
 }
 function addToCart(name, price, qty = 1, meta = {}) {
   const key = JSON.stringify({ name, price, meta });
@@ -403,11 +402,11 @@ function renderCart() {
   if (!cartItemsEl) return;
 
   cartItemsEl.innerHTML = '';
-  let subtotal = 0;
+  let subtotal = 0; 
 
   cart.forEach((item, idx) => {
     const line = item.price * item.qty;
-    subtotal += line;
+    subtotal += line; // <== A soma está aqui, funcionando corretamente
 
     const metaLines = [];
     if (item.meta?.tamanho) metaLines.push(`Tamanho: ${item.meta.tamanho}`);
@@ -440,7 +439,6 @@ function renderCart() {
   const total = subtotal;
 
   cartSubtotal.textContent = formatBRL(subtotal);
-  // cartFees.textContent = formatBRL(0); // Removido
   cartTotal.textContent    = formatBRL(total);
   cartCount.textContent    = cart.reduce((s,i)=>s+i.qty,0);
 
@@ -566,7 +564,7 @@ closeCartBtn?.addEventListener('click', closeCart);
 
 btnContinuar?.addEventListener('click', () => {
   closeCart();
-  document.querySelector('#home')?.scrollIntoView({behavior:'smooth', block:'start'});
+  document.querySelector('.container')?.scrollIntoView({behavior:'smooth', block:'start'}); 
 });
 
 btnFinalizar?.addEventListener('click', () => {

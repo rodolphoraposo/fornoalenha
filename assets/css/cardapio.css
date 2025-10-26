@@ -36,8 +36,11 @@ body.lock-scroll {
 
 /* Header fixo com efeito vidro (transparência + blur) */
 .topbar.glass {
-  position:sticky;
+  position:fixed; 
   top:0;
+  left:0; 
+  right:0; 
+  width:100%; 
   z-index:100;
   display:flex;
   align-items:center;
@@ -48,7 +51,7 @@ body.lock-scroll {
   border-bottom:1px solid var(--line);
 }
 
-.topbar.glass.scrolled {
+.topbar .glass .scrolled {
   background:rgba(11,12,15,0.8);
 }
 
@@ -90,12 +93,12 @@ body.lock-scroll {
   display:flex;
   align-items:center;
   gap:6px;
-  padding:8px 50px;
+  padding:8px 15px; /* Ajuste para desktop */
   border-radius:10px;
   color:var(--text);
   text-decoration:none;
   border:1px solid transparent;
-  font-size: 2rem;
+  font-size: 1rem; /* Ajuste para desktop */
 }
 
 .main-nav .nav-link:hover {
@@ -118,17 +121,19 @@ body.lock-scroll {
   font-size: 1.5rem;
 }
 
-/* espaço para o header não cobrir o início das seções ao navegar por âncora */
-section .tabelas {
-  scroll-margin-top: 76px;
-}
-
 /* Layout base */
 .container {
   max-width:1100px;
   margin:24px auto;
   padding:0 16px;
+  padding-top: 100px; 
 }
+
+/* espaço para o header não cobrir o início das seções ao navegar por âncora */
+section .tabelas {
+  scroll-margin-top: 76px;
+}
+
 
 /* Hero */
 .hero {
@@ -204,14 +209,21 @@ section .tabelas {
   margin:0 0 12px 0;
 }
 
-/* Cards de itens */
+/* Cards de itens (Ponto 4: Layout Flex com Scroll Horizontal) */
 .cards {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:16px;
+  display: flex; 
+  gap: 16px;
+  overflow-x: auto; 
+  padding-bottom: 16px; 
+  -webkit-overflow-scrolling: touch; 
+  scroll-snap-type: x mandatory; 
 }
 
 .card{
+  flex-shrink: 0; 
+  width: 280px; 
+  scroll-snap-align: start; 
+  
   background:var(--card);
   border:1px solid var(--line);
   border-radius:16px;
@@ -266,14 +278,15 @@ section .tabelas {
   background:#0c0d11;
   border-left:1px solid var(--line);
   transition:right .25s ease;
-  z-index:30;
-  display:flex; flex-direction:column;
-  overflow-y:auto;
+  z-index:200; /* <== CORREÇÃO PONTO 1: Aumentar z-index para ficar acima do header (100) */
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto; 
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
 
-.cart.open {
+.cart.open { 
   right:0;
 }
 
@@ -299,19 +312,24 @@ section .tabelas {
   padding:8px;
 }
 
-/* blocos internos */
+/* FIX: Estilo para a lista de itens do carrinho ser visível e rolar */
 .cart-items {
   padding:12px;
   display:flex;
   flex-direction:column;
   gap:10px;
+  
+  flex-grow: 0; 
+  overflow-y: visible; 
+  border-bottom: 1px solid var(--line);
 }
 
 .cart-item {
-  background:#13141a;
+  background:#13141a; 
   border:1px solid var(--line);
   border-radius:12px;
   padding:10px;
+  margin-bottom: 0; 
 }
 
 .cart-item .title {
@@ -349,7 +367,7 @@ section .tabelas {
 /* formulário e footer */
 .cart-form {
   padding:10px 12px;
-  border-top:1px solid var(--line);
+  border-top:none;
   border-bottom:1px solid var(--line);
   background:#0e0f14;
 }
@@ -373,7 +391,7 @@ section .tabelas {
   font-size:14px;
 }
 
-.field input, .field select {
+.field input, .field select { /* Ponto 2: Inclui o select no estilo de input */
   background:#12131a;
   border:1px solid var(--line);
   border-radius:8px;color:#fff;
@@ -391,8 +409,8 @@ section .tabelas {
 }
 
 .cart-footer {
-  position:sticky;
-  bottom:0;
+  position:static;
+  bottom:auto;
   z-index:2;
   padding:12px;
   background:#0c0d11;
@@ -488,7 +506,7 @@ legend {
   background:#151722;
   color:#e8e9ee;
   padding:8px 10px;
-  border-radius:4px;
+  border-radius:10px;
   cursor:pointer;
   user-select:none;
 }
@@ -554,7 +572,42 @@ legend {
   .field input,.field select{padding:12px}
   .cart-item{padding:12px}
   .modal-content{max-width:96vw}
-  .main-nav .nav-link span{display:none}
+
+  /* Ponto 3: Responsividade do Header */
+  .topbar {
+    padding: 10px 8px;
+  }
+  .brand > div { /* Esconde h1 e span */
+    display: none;
+  }
+  .main-nav {
+    flex-grow: 1; 
+    justify-content: space-around; /* Distribui o espaço */
+    gap: 0;
+  }
+  .main-nav .nav-link {
+    padding: 6px 4px; 
+    font-size: 1.8rem; /* Ícone um pouco menor */
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    gap: 2px;
+  }
+  .main-nav .nav-link span{ /* Reaparece o nome da seção */
+    display: block; 
+    font-size: 10px; 
+    color: var(--muted);
+  }
+  
+  /* Ponto 4: Cards com scroll (mobile) */
+  .card {
+    width: 85vw; /* Ocupa 85% da largura da viewport para forçar a rolagem e mostrar 1 por vez */
+  }
+  
+  /* Ajusta o padding do conteúdo principal no mobile */
+  .container {
+    padding-top: 100px;
+  }
 }
 
 /* telas muito estreitas (< 440px) – tipografia mais compacta */
@@ -572,4 +625,5 @@ legend {
 #icone {
   width: 80px;
   height: 80px;
+  margin: 0 50px;
 }

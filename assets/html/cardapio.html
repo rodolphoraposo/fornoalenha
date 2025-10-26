@@ -27,10 +27,10 @@
     </div>
 
     <nav class="main-nav" aria-label="Navegação principal">
-      <a class="nav-link" href="#pizzas" data-target="pizzas" title="Pizzas">🍕</a>
-      <a class="nav-link" href="#sushi"  data-target="sushi"  title="Sushis">🍣</a>
-      <a class="nav-link" href="#esfirra"  data-target="esfirras"  title="Esfirras">🥟</a>
-      <a class="nav-link" href="#bebidas"data-target="bebidas"title="Bebidas">🥤</a>
+      <a class="nav-link" href="#pizzas" data-target="pizzas" title="Pizzas">🍕<span>Pizzas</span></a>
+      <a class="nav-link" href="#sushi"  data-target="sushi"  title="Sushis">🍣<span>Sushis</span></a>
+      <a class="nav-link" href="#esfirra"  data-target="esfirras"  title="Esfirras">🥟<span>Esfirras</span></a>
+      <a class="nav-link" href="#bebidas"data-target="bebidas"title="Bebidas">🥤<span>Bebidas</span></a>
     </nav>
 
     <button class="cart-trigger" id="open-cart" aria-label="Abrir carrinho">
@@ -40,7 +40,6 @@
 
   <main class="container">
       
-    <!-- PIZZAS -->
     <section id="pizzas">
       <h1>🍕 Pizzas</h1>
       <section class="tabelas">
@@ -80,7 +79,6 @@
       </section>
     </section>
 
-    <!-- SUSHI & DERIVADOS -->
     <section class="secao" id="sushi">
       <h1>🍣 Sushis</h1>
 
@@ -88,7 +86,6 @@
       <div class="cards">
         <div class="card">
           <h3>Combinado 01 <small>(12 peças)</small></h3>
-          <img src="../imgs/combinado1.webp" alt="Combinado de sushis." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <ul>
             <li>4 Hot de Filadélfia</li>
             <li>4 Hot de Camarão</li>
@@ -99,7 +96,6 @@
         </div>
         <div class="card">
           <h3>Combinado 02 <small>(12 peças)</small></h3>
-          <img src="../imgs/combinado2.webp" alt="Combinado de sushis." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <ul>
             <li>4 Hot de Camarão</li>
             <li>4 Hot de Kani</li>
@@ -110,7 +106,6 @@
         </div>
         <div class="card">
           <h3>Combinado 03 <small>(14 peças)</small></h3>
-          <img src="../imgs/combinado3.webp" alt="Combinado de sushis." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <ul>
             <li>2 Uramakis de Salmão</li>
             <li>2 Hossomaki de Kani</li>
@@ -122,7 +117,6 @@
         </div>
         <div class="card">
           <h3>Combinado 04 <small>(19 peças)</small></h3>
-          <img src="../imgs/combinado4.webp" alt="Combinado de sushis." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <ul>
             <li>2 Uramakis de Salmão</li>
             <li>2 Hossomaki de Kani</li>
@@ -135,7 +129,6 @@
         </div>
         <div class="card">
           <h3>Combinado 05 <small>(26 peças)</small></h3>
-          <img src="../imgs/combinado5.webp" alt="Combinado de sushis." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <ul>
             <li>4 Uramakis de Salmão</li>
             <li>4 Hossomaki de Kani</li>
@@ -152,28 +145,24 @@
       <div class="cards">
         <div class="card">
           <h3>Salmão</h3>
-          <img src="../imgs/tsalmao.webp" alt="Temaki de Salmão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Cones de alga com arroz e salmão.</p>
           <span class="price">R$ 36,90</span>
           <button class="btn btn-add" onclick="addToCart('Temaki de Salmão', 36.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Salmão Grelhado</h3>
-          <img src="../imgs/tsalmaogrelhado.webp" alt="Temaki de Salmão Grelhado." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Salmão grelhado no cone de alga com arroz.</p>
           <span class="price">R$ 36,90</span>
           <button class="btn btn-add" onclick="addToCart('Temaki de Salmão Grelhado', 36.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Polvo</h3>
-          <img src="../imgs/tpolvo.webp" alt="Temaki de Polvo." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Polvo selecionado, arroz e alga.</p>
           <span class="price">R$ 36,90</span>
           <button class="btn btn-add" onclick="addToCart('Temaki de Polvo', 36.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Camarão</h3>
-          <img src="../imgs/tcamarao.webp" alt="Temaki de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Camarão, arroz e alga crocante.</p>
           <span class="price">R$ 36,90</span>
           <button class="btn btn-add" onclick="addToCart('Temaki de Camarão', 36.90, 1)">Adicionar</button>
@@ -184,7 +173,6 @@
       <div class="cards">
         <div class="card">
           <h3>Sushidog</h3>
-          <img src="../imgs/sushidog.webp" alt="Pepsi 1L." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Clássico da casa.</p>
           <span class="price">R$ 37,90</span>
           <button class="btn btn-add" onclick="addToCart('Sushidog', 37.90, 1)">Adicionar</button>
@@ -192,45 +180,38 @@
       </div>
     </section>
     
-    <!-- ESFIRRAS -->
     <section class="secao" id="esfirra">
       <h2 style="margin:18px 0 10px">Tradicionais <small style="color:#8b8d94"></small></h2>
       <div class="cards">
         <div class="card">
           <h3>Mista</h3>
-          <img src="../imgs/esfirrami.webp" alt="Esfiha Mista." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 3,90</span>
           <button class="btn btn-add" onclick="addToCart('Esfiha Mista', 3.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Frango</h3>
-          <img src="../imgs/esfirrafr.webp" alt="Temaki de Salmão Grelhado." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 3,90</span>
-          <button class="btn btn-add" onclick="addToCart('Temaki de Salmão Grelhado', 3.90, 1)">Adicionar</button>
+          <button class="btn btn-add" onclick="addToCart('Esfiha de Frango', 3.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Mussarela</h3>
-          <img src="../imgs/esfirramu.webp" alt="Temaki de Polvo." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 3,90</span>
-          <button class="btn btn-add" onclick="addToCart('Temaki de Polvo', 3.90, 1)">Adicionar</button>
+          <button class="btn btn-add" onclick="addToCart('Esfiha de Mussarela', 3.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Carne Moída</h3>
-          <img src="../imgs/esfirracn.webp" alt="Temaki de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 3,90</span>
-          <button class="btn btn-add" onclick="addToCart('Temaki de Camarão', 3.90, 1)">Adicionar</button>
+          <button class="btn btn-add" onclick="addToCart('Esfiha de Carne Moída', 3.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Calabresa</h3>
-          <img src="../imgs/esfirracb.webp" alt="Temaki de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 3,90</span>
-          <button class="btn btn-add" onclick="addToCart('Temaki de Camarão', 3.90, 1)">Adicionar</button>
+          <button class="btn btn-add" onclick="addToCart('Esfiha de Calabresa', 3.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Marguerita</h3>
-          <img src="../imgs/esfirramg.webp" alt="Temaki de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 3,90</span>
-          <button class="btn btn-add" onclick="addToCart('Temaki de Camarão', 3.90, 1)">Adicionar</button>
+          <button class="btn btn-add" onclick="addToCart('Esfiha de Marguerita', 3.90, 1)">Adicionar</button>
         </div>
       </div>
       </div>
@@ -239,52 +220,44 @@
       <div class="cards">
         <div class="card">
           <h3>Camarão</h3>
-          <img src="../imgs/esfirracm.webp" alt="Esfiha de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 4,90</span>
           <button class="btn btn-add" onclick="addToCart('Esfiha de Camarão', 4.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Carne de Sol</h3>
-          <img src="../imgs/esfirracs.webp" alt="Esfiha de Carne de Sol." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 4,90</span>
           <button class="btn btn-add" onclick="addToCart('Esfiha de Carne de Sol', 4.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Frango com Catupiry</h3>
-          <img src="../imgs/esfirrafc.webp" alt="Esfiha de Frango com Catupiry." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 4,90</span>
           <button class="btn btn-add" onclick="addToCart('Esfiha Frango com Catupiry', 4.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Quatro Queijos</h3>
-          <img src="../imgs/esfirraqq.webp" alt="Esfiha de Camarão." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <span class="price">R$ 4,90</span>
           <button class="btn btn-add" onclick="addToCart('Esfiha Quatro Queijos', 4.90, 1)">Adicionar</button>
         </div>
       </div>
     </section>
 
-    <!-- BEBIDAS -->
     <section class="secao" id="bebidas">
       <h1>🥤 Refrigerantes</h1>
       <div class="cards" id="cards-bebidas">
         <div class="card">
           <h3>Coca-Cola 1L</h3>
-          <img src="../imgs/coca1l.webp" alt="Coca-Cola 1L." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Refrigerante Coca-Cola 1 Litro.</p>
           <span class="price">R$ 8,90</span>
           <button class="btn btn-add" onclick="addToCart('Coca-Cola 1L', 8.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Guaraná 1L</h3>
-          <img src="../imgs/guarana1l.webp" alt="Guaraná 1L." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Refrigerante Guaraná 1 Litro.</p>
           <span class="price">R$ 6,90</span>
           <button class="btn btn-add" onclick="addToCart('Guaraná 1L', 6.90, 1)">Adicionar</button>
         </div>
         <div class="card">
           <h3>Pepsi 1L</h3>
-          <img src="../imgs/pepsi1l.webp" alt="Pepsi 1L." style="width: 150px; height: 150px; border-radius: 50%; border: 1px solid #fff;">
           <p>Refrigerante Pepsi 1 Litro.</p>
           <span class="price">R$ 6,90</span>
           <button class="btn btn-add" onclick="addToCart('Pepsi 1L', 6.90, 1)">Adicionar</button>
@@ -295,9 +268,14 @@
 
   
 
-  <!-- CARRINHO (drawer) -->
   <aside class="cart" id="cart">
-    <!-- ENTREGA / DADOS DO CLIENTE -->
+    <div class="cart-header">
+      <h3>Seu Carrinho</h3>
+      <button class="icon-btn" id="close-cart" title="Fechar">✖</button>
+    </div>
+
+    <div id="cart-items" class="cart-items"></div>
+
     <div class="cart-form">
       <h4>Entrega</h4>
       <div class="field inline">
@@ -352,11 +330,14 @@
       </div>
       
       <h4>Pagamento</h4>
-      <div class="field inline" style="flex-wrap: wrap;">
-        <label><input type="radio" name="forma-pagamento" value="dinheiro" checked> Dinheiro</label>
-        <label><input type="radio" name="forma-pagamento" value="debito"> Débito</label>
-        <label><input type="radio" name="forma-pagamento" value="credito"> Crédito</label>
-        <label><input type="radio" name="forma-pagamento" value="pix"> PIX</label>
+      <div class="field">
+        <label for="forma-pagamento-select">Forma de Pagamento</label>
+        <select id="forma-pagamento-select" name="forma-pagamento-select">
+          <option value="dinheiro">Dinheiro</option>
+          <option value="debito">Cartão de Débito</option>
+          <option value="credito">Cartão de Crédito</option>
+          <option value="pix">PIX</option>
+        </select>
       </div>
 
       <div id="dinheiro-fields">
@@ -399,7 +380,6 @@
     </div>
   </aside>
 
-  <!-- MODAL: MONTE SUA PIZZA -->
   <div id="pizza-modal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -408,28 +388,24 @@
       </div>
 
       <form id="pizza-form">
-        <!-- Tamanho -->
         <fieldset>
           <legend>Tamanho</legend>
-          <div class="options" id="tamanho-options"><!-- via JS --></div>
+          <div class="options" id="tamanho-options"></div>
           <small class="hint" id="hint-precos-familia">Selecione um tamanho para ver os preços por família.</small>
         </fieldset>
 
-        <!-- Sabores -->
         <fieldset>
           <legend>Sabores (até 2)</legend>
-          <div id="sabor-options"><!-- via JS --></div>
+          <div id="sabor-options"></div>
           <small class="hint">Pode escolher até 2 sabores (meio a meio). O valor considera o maior preço entre as famílias selecionadas.</small>
         </fieldset>
 
-        <!-- Borda -->
         <fieldset>
           <legend>Borda Recheada</legend>
-          <div class="options" id="borda-options"><!-- via JS --></div>
+          <div class="options" id="borda-options"></div>
           <small class="hint">Borda disponível apenas para tamanhos Média e Grande.</small>
         </fieldset>
 
-        <!-- Resumo de Preço -->
         <div class="resumo">
           <div><span>Pizza</span><strong id="pizza-subtotal">R$ 0,00</strong></div>
           <div><span>Adicional de Borda</span><strong id="borda-adicional">R$ 0,00</strong></div>
