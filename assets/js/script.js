@@ -3,7 +3,7 @@
  *************************************************/
 
 // Número do WhatsApp no formato internacional (ex.: Brasil 55 + DDD + número)
-const WHATSAPP_NUMBER = "5588999999999"; // <— troque pelo seu
+const WHATSAPP_NUMBER = "5582991201916"; // <— troque pelo seu
 
 // Chave PIX da empresa para o cliente copiar (CNPJ fornecido: 59.130.875/0001-50)
 const PIX_KEY = "59.130.875/0001-50"; // <— CORRIGIDO com o CNPJ do Rapôso

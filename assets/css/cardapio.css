@@ -209,20 +209,30 @@ section .tabelas {
   margin:0 0 12px 0;
 }
 
-/* Cards de itens (Ponto 4: Layout Flex com Scroll Horizontal) */
-.cards {
-  display: flex; 
+/* Cards de itens (Layout de Grade Responsivo) */
+.cards { 
+  display: grid; 
   gap: 16px;
-  overflow-x: auto; 
-  padding-bottom: 16px; 
-  -webkit-overflow-scrolling: touch; 
-  scroll-snap-type: x mandatory; 
+  /* Desktop e maiores: 3 colunas por vez */
+  grid-template-columns: repeat(3, 1fr); 
+  padding-bottom: 0; /* Remove padding de scroll */
+}
+
+/* Novo estilo para a imagem do produto */
+.card-img {
+    width: 100%;
+    /* Altura fixa para manter a consistência e dar espaço para a imagem */
+    height: 180px; 
+    object-fit: cover;
+    border-radius: 10px;
+    /* Placeholder visual para a imagem */
+    background: #20222b; 
+    border: 1px dashed var(--line);
+    margin-bottom: 8px; /* Espaçamento entre foto e nome/conteúdo */
 }
 
 .card{
-  flex-shrink: 0; 
-  width: 280px; 
-  scroll-snap-align: start; 
+  /* As propriedades de flex-shrink, width, scroll-snap-align foram removidas/ignoradas */
   
   background:var(--card);
   border:1px solid var(--line);
@@ -262,6 +272,10 @@ section .tabelas {
   background:#2c2f39;
   color:#fff;
   border:1px solid var(--line);
+}
+
+#btn-monte-pizza {
+  font-size: 1rem;
 }
 
 /* =========================================
@@ -560,6 +574,13 @@ legend {
 }
 
 /* Responsivo */
+@media (max-width:992px) { /* Tablets (e telas menores que desktop) */
+  .cards {
+    /* Tablet: 2 cards por vez */
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width:760px){
   .hero{grid-template-columns:1fr}
   .hero-art{display:none}
@@ -599,9 +620,9 @@ legend {
     color: var(--muted);
   }
   
-  /* Ponto 4: Cards com scroll (mobile) */
-  .card {
-    width: 85vw; /* Ocupa 85% da largura da viewport para forçar a rolagem e mostrar 1 por vez */
+  /* Ponto 4: Cards em bloco (mobile) */
+  .cards {
+    grid-template-columns: 1fr; /* 1 coluna em tela cheia */
   }
   
   /* Ajusta o padding do conteúdo principal no mobile */
@@ -626,4 +647,13 @@ legend {
   width: 80px;
   height: 80px;
   margin: 0 50px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #d1d5db;
 }
