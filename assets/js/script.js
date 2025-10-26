@@ -30,13 +30,13 @@ const SABORES = {
     { name: "Napolitana", imagePath: "../imgs/pizza/napolitana.webp" }
   ],
   Especial: [
-    { name: "Frango com Catupiry", imagePath: "../imgs/pizza/frango_catupiry.webp" },
-    { name: "Carne de Sol", imagePath: "../imgs/pizza/carne_de_sol.webp" },
+    { name: "Frango com Catupiry", imagePath: "../imgs/pizza/frango_atupiry.webp" },
+    { name: "Carne de Sol", imagePath: "../imgs/pizza/carnedesol.webp" },
     { name: "Nordestina", imagePath: "../imgs/pizza/nordestina.webp" },
     { name: "Camarão", imagePath: "../imgs/pizza/camarao.webp" },
     { name: "Portuguesa", imagePath: "../imgs/pizza/portuguesa.webp" },
-    { name: "Lombo Canadense", imagePath: "../imgs/pizza/lombo_canadense.webp" },
-    { name: "Quatro Queijos", imagePath: "../imgs/pizza/quatro_queijos.webp" },
+    { name: "Lombo Canadense", imagePath: "../imgs/pizza/lombocanadense.webp" },
+    { name: "Quatro Queijos", imagePath: "../imgs/pizza/quatroqueijos.webp" },
     { name: "Bacon", imagePath: "../imgs/pizza/bacon.webp" },
     { name: "Atum", imagePath: "../imgs/pizza/atum.webp" },
     { name: "Catupirela", imagePath: "../imgs/pizza/catupirela.webp" }
@@ -46,7 +46,7 @@ const SABORES = {
     { name: "Ovomaltine", imagePath: "../imgs/pizza/ovomaltine.webp" },
     { name: "M&M", imagePath: "../imgs/pizza/m&m.webp" },
     { name: "Banana", imagePath: "../imgs/pizza/banana.webp" },
-    { name: "Romeu e Julieta", imagePath: "../imgs/pizza/romeu_e_julieta.webp" }
+    { name: "Romeu e Julieta", imagePath: "../imgs/pizza/romeuejulieta.webp" }
   ]
 };
 
@@ -55,7 +55,7 @@ const BORDAS = [
     { name: "Mussarela", imagePath: "../imgs/borda/mussarela.webp" },
     { name: "Cheddar", imagePath: "../imgs/borda/cheddar.webp" },
     { name: "Catupiry", imagePath: "../imgs/borda/catupiry.webp" },
-    { name: "Creme Cheese", imagePath: "../imgs/borda/creme_cheese.webp" },
+    { name: "Creme Cheese", imagePath: "../imgs/borda/cremecheese.webp" },
     { name: "Chocolate", imagePath: "../imgs/borda/chocolate.webp" }
 ];
 const TAMANHOS = ["Brotinho", "Média", "Grande"];
