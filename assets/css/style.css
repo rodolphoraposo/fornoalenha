@@ -106,6 +106,128 @@ body::before {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
+/* ====== CARD PROMOCIONAL (HOME) ====== */
+.promo-card {
+  display: grid;
+  grid-template-columns: 1.15fr 1.85fr;
+  gap: 12px;
+  margin: 6px 0 14px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 14px;
+  background:
+    radial-gradient(800px 300px at -10% -60%, rgba(255, 177, 10, .18), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 100%);
+  backdrop-filter: blur(2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+  color: #111;
+}
+
+.promo-card.hidden { display: none; }
+
+.promo-media {
+  position: relative;
+  border: 1px dashed rgba(255,255,255,.35);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(0,0,0,.35);
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.promo-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.promo-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  background: #F4A261;
+  color: #111;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}
+
+.promo-body h2 {
+  margin: 0 0 4px 0;
+  font-size: 1.2rem;
+  color: #000;
+  text-align: left;
+}
+.promo-subtitle {
+  margin: 0 0 4px 0;
+  color: #ffcf6f;
+  font-weight: 700;
+  text-align: left;
+}
+.promo-description {
+  margin: 0 0 6px 0;
+  color: #111;
+  text-align: left;
+}
+
+.promo-prices {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 6px 0 8px;
+  text-align: left;
+}
+.promo-prices .old {
+  color: #333;
+  text-decoration: line-through;
+}
+.promo-prices .new {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #111;
+  background: #F4A261;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  justify-content: flex-start;
+}
+.btn-promo {
+  cursor: pointer;
+  border: 1px solid #3F6C3A;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 600;
+  transition: all .2s ease;
+}
+.btn-primary {
+  background: #F4A261;
+  color: #000;
+}
+.btn-secondary {
+  background: #fff;
+  color: #000;
+}
+.btn-promo:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(220, 184, 43, 0.3);
+}
+
+.promo-footnote {
+  display: block;
+  margin-top: 6px;
+  color: #222;
+  opacity: .85;
+  text-align: left;
+  font-size: .85rem;
+}
+
 /* Menu de itens / links do cardápio */
 nav {
   margin-bottom: 15px;
@@ -193,6 +315,11 @@ footer {
     font-size: 1rem;
     padding: 10px 8px;
   }
+
+  .promo-card {
+    grid-template-columns: 1fr;
+  }
+  .promo-media { min-height: 120px; }
 }
 
 /* Estilo da seção Horário */

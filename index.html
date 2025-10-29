@@ -19,6 +19,33 @@
             <img src="./assets/imgs/fornoalenha.webp" alt="Logo Forno à Lenha Pizzaria">
         </div>
 
+        <!-- ====== CARD PROMOCIONAL (controlado via JS no final) ====== -->
+        <section id="promo-card" class="promo-card hidden" aria-live="polite">
+          <div class="promo-media">
+            <img id="promo-img" src="" alt="Imagem da promoção" loading="lazy">
+            <span class="promo-badge" id="promo-badge">Promo</span>
+          </div>
+          <div class="promo-body">
+            <h2 id="promo-title">Título da Promoção</h2>
+            <p id="promo-subtitle" class="promo-subtitle"></p>
+            <p id="promo-description" class="promo-description"></p>
+
+            <div class="promo-prices" id="promo-prices">
+              <!-- Preenchido via JS: preço cheio e promocional (opcionais) -->
+            </div>
+
+            <div class="promo-actions">
+              <button type="button" class="btn-promo btn-primary" id="promo-cta">Aproveitar</button>
+              <button type="button" class="btn-promo btn-secondary" id="promo-dismiss" aria-label="Fechar promoção">
+                Ocultar agora
+              </button>
+            </div>
+
+            <small class="promo-footnote" id="promo-footnote"></small>
+          </div>
+        </section>
+        <!-- ====== FIM: CARD PROMOCIONAL ====== -->
+
         <nav>
             <ul class="menu">
 
@@ -59,6 +86,139 @@
             <small>&copy; 2025 - <a href="https://portfolioraposoofc.vercel.app" style="text-decoration: none; color: #fff;">Rapôso Web Dev</a> | Todos os direitos reservados.</small>
         </footer>
     </div>
+
+    <!-- ====== SCRIPT INLINE: controle do CARD PROMOCIONAL (Home) ====== -->
+    <script>
+      // Ligue/Desligue a promoção aqui:
+      const HOME_PROMO_ACTIVE = true; // true = mostra | false = esconde
+
+      // Definições da promoção na Home
+      const HOME_PROMO = {
+        title: "🎉 Promo relâmpago: 2 Pizzas Médias",
+        subtitle: "Só hoje!",
+        description: "Leve 2 sabores tradicionais por um preço especial.",
+        // preços (opcionais)
+        priceOld: null,     // ex.: 79.90
+        priceNew: null,     // ex.: 69.90
+        image: "./assets/imgs/promo.webp", // opcional
+        badge: "Promo",
+        footnote: "Válido enquanto durarem os estoques.",
+        allowDismiss: true,
+        // Ação do botão principal:
+        cta: {
+          type: "link",  // "link" | "whatsapp"
+          // Se "link": abre o cardápio em nova aba
+          href: "./assets/html/cardapio.html",
+          // Se "whatsapp": abre conversa com mensagem
+          whatsappNumber: "5582991201916",
+          whatsappMessage: "Olá! Tenho interesse na promoção de 2 Pizzas Médias."
+        }
+      };
+
+      function renderHomePromo() {
+        const wrap = document.getElementById("promo-card");
+        if (!wrap) return;
+
+        // Se o usuário ocultou, respeita até a próxima visita/carga
+        if (HOME_PROMO.allowDismiss && localStorage.getItem("home_promo_dismissed") === "1") {
+          wrap.classList.add("hidden");
+          return;
+        }
+
+        if (!HOME_PROMO_ACTIVE) {
+          wrap.classList.add("hidden");
+          return;
+        }
+
+        const img = document.getElementById("promo-img");
+        const badge = document.getElementById("promo-badge");
+        const title = document.getElementById("promo-title");
+        const subtitle = document.getElementById("promo-subtitle");
+        const description = document.getElementById("promo-description");
+        const prices = document.getElementById("promo-prices");
+        const cta = document.getElementById("promo-cta");
+        const dismiss = document.getElementById("promo-dismiss");
+        const footnote = document.getElementById("promo-footnote");
+
+        // imagem
+        if (img) {
+          if (HOME_PROMO.image) { img.src = HOME_PROMO.image; img.style.display = ""; }
+          else { img.style.display = "none"; }
+        }
+
+        // badge
+        if (badge) badge.textContent = HOME_PROMO.badge || "Promo";
+
+        // textos
+        if (title) title.textContent = HOME_PROMO.title || "Promoção";
+        if (subtitle) {
+          subtitle.textContent = HOME_PROMO.subtitle || "";
+          subtitle.style.display = HOME_PROMO.subtitle ? "" : "none";
+        }
+        if (description) {
+          description.textContent = HOME_PROMO.description || "";
+          description.style.display = HOME_PROMO.description ? "" : "none";
+        }
+
+        // preços (opcionais)
+        if (prices) {
+          prices.innerHTML = "";
+          if (typeof HOME_PROMO.priceOld === "number") {
+            const sOld = document.createElement("span");
+            sOld.className = "old";
+            sOld.textContent = `R$ ${HOME_PROMO.priceOld.toFixed(2).replace(".", ",")}`;
+            prices.appendChild(sOld);
+          }
+          if (typeof HOME_PROMO.priceNew === "number") {
+            const sNew = document.createElement("span");
+            sNew.className = "new";
+            sNew.textContent = `R$ ${HOME_PROMO.priceNew.toFixed(2).replace(".", ",")}`;
+            prices.appendChild(sNew);
+          }
+          prices.style.display = prices.children.length ? "" : "none";
+        }
+
+        // rodapé
+        if (footnote) {
+          footnote.textContent = HOME_PROMO.footnote || "";
+          footnote.style.display = HOME_PROMO.footnote ? "" : "none";
+        }
+
+        // ação do CTA
+        if (cta) {
+          cta.textContent = HOME_PROMO.cta?.text || "Aproveitar";
+          cta.onclick = () => {
+            const a = HOME_PROMO.cta?.type || "link";
+            if (a === "link") {
+              const href = HOME_PROMO.cta?.href || "./assets/html/cardapio.html";
+              window.open(href, "_blank");
+            } else if (a === "whatsapp") {
+              const num = HOME_PROMO.cta?.whatsappNumber || "5582991201916";
+              const msg = HOME_PROMO.cta?.whatsappMessage || "Olá! Quero a promoção.";
+              const url = `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+              window.open(url, "_blank");
+            }
+          };
+        }
+
+        // ocultar agora
+        if (dismiss) {
+          dismiss.style.display = HOME_PROMO.allowDismiss ? "" : "none";
+          dismiss.onclick = () => {
+            if (HOME_PROMO.allowDismiss) {
+              localStorage.setItem("home_promo_dismissed", "1");
+              wrap.classList.add("hidden");
+            }
+          };
+        }
+
+        // exibe
+        wrap.classList.remove("hidden");
+      }
+
+      // Renderiza na carga
+      renderHomePromo();
+    </script>
 </body>
 
 </html>
