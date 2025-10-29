@@ -61,7 +61,7 @@ const TAMANHOS = ["Brotinho", "Média", "Grande"];
  *************************************************/
 let cart = JSON.parse(localStorage.getItem("cart_fornoalenha") || "[]");
 const deliveryState = {
-  modo: "retirada", // retirada | delivery
+  modo: "retirada",
   nome: "",
   telefone: "",
   rua: "",
@@ -70,7 +70,7 @@ const deliveryState = {
   cep: "",
   referencia: "",
   bairro: "", 
-  formaPagamento: "dinheiro", // dinheiro | debito | credito | pix
+  formaPagamento: "dinheiro",
   valorPago: 0,
   observacao: "" 
 };
@@ -98,7 +98,6 @@ const bordaOptionsEl   = document.getElementById('borda-options');
 const hintPrecosFamilia = document.getElementById('hint-precos-familia');
 const btnVoltarPizza = document.getElementById('btn-voltar-pizza'); 
 
-// Campos de entrega/contato
 const radiosModoEntrega = document.querySelectorAll('input[name="modo-entrega"]');
 const deliveryFieldsBox = document.getElementById('delivery-fields');
 const inputRua = document.getElementById('rua');
@@ -110,17 +109,14 @@ const inputNome = document.getElementById('nome');
 const inputTelefone = document.getElementById('telefone');
 const inputBairro = document.getElementById('bairro');
 
-// ELEMENTOS DE PAGAMENTO
 const selectFormaPagamento = document.getElementById('forma-pagamento-select');
-const dinheiroFields = document.getElementById('dinheiro-fields'); // pode não existir
+const dinheiroFields = document.getElementById('dinheiro-fields');
 const pixFields = document.getElementById('pix-fields');
 const pixKeyEl = document.getElementById('pix-key');
 const btnCopyPixInline = document.getElementById('btn-copy-pix-inline');
 
-// NOVO: Campo de Observação
 const inputObservacao = document.getElementById('observacao'); 
 
-// Modal PIX (novo)
 const pixAlert = document.getElementById('pix-alert');
 const pixAlertKey = document.getElementById('pix-key-alert');
 const btnPixFechar = document.getElementById('btn-pix-fechar');
@@ -149,7 +145,6 @@ document.querySelectorAll('.main-nav .nav-link').forEach(a => {
  * INICIALIZAÇÃO — CAMPOS DE ENTREGA E PAGAMENTO
  *************************************************/
 (function initDeliveryAndPaymentFields() {
-  // Inicialização PIX (inputs e botões de copiar)
   if (pixKeyEl) {
     pixKeyEl.value = PIX_KEY;
     pixKeyEl.parentElement.addEventListener('click', () => {
@@ -174,7 +169,6 @@ document.querySelectorAll('.main-nav .nav-link').forEach(a => {
     pixAlertKey.value = PIX_KEY;
   }
 
-  // Inicialização Entrega
   radiosModoEntrega.forEach(r => {
     r.addEventListener('change', () => {
       deliveryState.modo = r.value;
@@ -187,7 +181,6 @@ document.querySelectorAll('.main-nav .nav-link').forEach(a => {
     });
   });
 
-  // Captura de dados
   inputBairro?.addEventListener('input', e => deliveryState.bairro = e.target.value);
   inputRua?.addEventListener('input', e => deliveryState.rua = e.target.value);
   inputNumero?.addEventListener('input', e => deliveryState.numero = e.target.value);
@@ -198,7 +191,6 @@ document.querySelectorAll('.main-nav .nav-link').forEach(a => {
   inputTelefone?.addEventListener('input', e => deliveryState.telefone = e.target.value);
   inputObservacao?.addEventListener('input', e => deliveryState.observacao = e.target.value);
   
-  // Pagamento (Select)
   if (selectFormaPagamento) {
     selectFormaPagamento.addEventListener('change', (e) => {
       deliveryState.formaPagamento = e.target.value;
@@ -289,12 +281,10 @@ function getSelectedTamanho() {
   return r ? r.value : null;
 }
 
-/* Limitação dinâmica: 1 sabor para Brotinho, 2 para demais tamanhos */
 function limitPizzaFlavors() {
   const max = getSelectedTamanho() === "Brotinho" ? 1 : 2;
   const selected = [...pizzaForm.querySelectorAll('input[name="sabor"]:checked')];
   if (selected.length > max) {
-    // mantém os primeiros selecionados e desmarca o último clicado
     selected.slice(max).forEach(inp => inp.checked = false);
   }
 }
@@ -304,7 +294,6 @@ function handlePizzaChange() {
   toggleBordaByTamanho();
   updateHintPrecosFamilia();
 
-  // Se mudou para Brotinho e havia 2 sabores, garante apenas 1
   if (getSelectedTamanho() === "Brotinho") {
     const sel = [...pizzaForm.querySelectorAll('input[name="sabor"]:checked')];
     sel.slice(1).forEach(inp => inp.checked = false);
@@ -436,13 +425,29 @@ function renderCart() {
 }
 
 /*************************************************
- * WHATSAPP — MENSAGEM (modelo novo)
+ * WHATSAPP — MENSAGEM (ajustada p/ não somar borda ao preço da pizza)
  *************************************************/
+function getFamiliaDoSabor(nome) {
+  for (const fam of Object.keys(SABORES)) {
+    if (SABORES[fam].some(s => s.name === nome)) return fam;
+  }
+  return null;
+}
+function getPrecoBasePizza(tamanho, sabores) {
+  let maior = 0;
+  (sabores || []).forEach(sabor => {
+    const fam = getFamiliaDoSabor(sabor);
+    const tabela = fam ? PRECO_PIZZA[fam] : null;
+    const p = tabela ? tabela[tamanho] : 0;
+    if (p > maior) maior = p;
+  });
+  return maior;
+}
+
 function montarMensagemWhatsApp() {
   const linhas = [];
   const SEP = "====================================";
 
-  // Cabeçalho
   linhas.push("🍕 NOVO PEDIDO — Forno a Lenha 🍕");
   linhas.push("");
   linhas.push(SEP);
@@ -450,46 +455,52 @@ function montarMensagemWhatsApp() {
   linhas.push("ITENS DO PEDIDO:");
   linhas.push("");
 
-  // Itens
+  let subtotalCalc = 0;
   cart.forEach(i => {
-    const totalItem = i.price * i.qty;
-    // Título do item (nome + tamanho no nome) — exibe no padrão solicitado
+    const isPizza = (i.meta?.tamanho && Array.isArray(i.meta?.sabores) && i.meta.sabores.length > 0);
+
+    let itemBaseUnit = i.price;
+    let adicionalBordaUnit = 0;
+
+    if (isPizza) {
+      const base = getPrecoBasePizza(i.meta.tamanho, i.meta.sabores) || 0;
+      const addBorda = (i.meta?.borda && i.meta.borda !== "Nenhuma") ? (PRECO_BORDA[i.meta.tamanho] || 0) : 0;
+      itemBaseUnit = base;
+      adicionalBordaUnit = addBorda;
+    }
+
+    const lineValorBase = itemBaseUnit * i.qty;
+    const lineValorBorda = adicionalBordaUnit * i.qty;
+
+    subtotalCalc += lineValorBase + lineValorBorda;
+
     let titulo = `• ${i.qty}x ${i.name.replace(/\s+\(.+\)$/, '').trim()}`;
-    // Se houver tamanho no meta, exibir junto ao título
     if (i.meta?.tamanho) {
-      // Ex.: "Pizza Grande"
       const tipo = (i.name.toLowerCase().includes("pizza") ? "Pizza " : "");
       titulo = `• ${i.qty}x ${tipo}${i.meta.tamanho}`;
     }
-    titulo += ` - ${formatBRL(totalItem)}`;
+    titulo += ` - ${formatBRL(lineValorBase)}`;
     linhas.push(titulo);
 
-    // Sabores — se 2 sabores, usa "¹/²"
     if (i.meta?.sabores?.length) {
       if (i.meta.sabores.length === 2) {
         linhas.push(`¹/² ${i.meta.sabores[0]}`);
         linhas.push(`¹/² ${i.meta.sabores[1]}`);
       } else {
-        // único sabor
         linhas.push(`${i.meta.sabores[0]}`);
       }
     }
 
-    // Borda (em linha separada com seu preço específico)
-    if (i.meta?.borda && i.meta.borda !== "Nenhuma" && i.meta?.tamanho) {
-      const adicionalBorda = PRECO_BORDA[i.meta.tamanho] || 0;
-      if (adicionalBorda > 0) {
-        linhas.push("");
-        linhas.push(`• Borda: ${i.meta.borda} - ${formatBRL(adicionalBorda)}`);
-      }
+    if (adicionalBordaUnit > 0 && i.meta?.borda) {
+      linhas.push("");
+      linhas.push(`• Borda: ${i.meta.borda} - ${formatBRL(lineValorBorda)}`);
     }
 
-    linhas.push(""); // espaço entre itens
+    linhas.push("");
   });
 
-  // Totais
-  const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
-  const total = subtotal;
+  const subtotal = subtotalCalc;
+  const total = subtotalCalc;
 
   linhas.push(SEP);
   linhas.push("");
@@ -499,7 +510,6 @@ function montarMensagemWhatsApp() {
   linhas.push(SEP);
   linhas.push("");
   
-  // Forma de pagamento
   linhas.push("FORMA DE PAGAMENTO:");
   if (deliveryState.formaPagamento === "dinheiro") {
     linhas.push("* Dinheiro (Pagamento em mãos)");
@@ -514,7 +524,6 @@ function montarMensagemWhatsApp() {
   linhas.push(SEP);
   linhas.push("");
 
-  // Entrega
   linhas.push(`ENTREGA: ${deliveryState.modo === "delivery" ? "Delivery" : "Retirada no balcão"}`);
   if (deliveryState.modo === "delivery") {
     linhas.push("DADOS DA ENTREGA:");
@@ -523,16 +532,12 @@ function montarMensagemWhatsApp() {
     if (deliveryState.complemento) linhas.push(`* Comp.: ${deliveryState.complemento}`);
     if (deliveryState.bairro) linhas.push(`* Bairro: ${deliveryState.bairro}`);
     if (deliveryState.cep) linhas.push(`* CEP: ${deliveryState.cep}`);
-    if (deliveryState.referencia) {
-      // Se a referência for muito longa, pode conter quebra natural
-      linhas.push(`* Referência: ${deliveryState.referencia}`);
-    }
+    if (deliveryState.referencia) linhas.push(`* Referência: ${deliveryState.referencia}`);
     linhas.push("");
   }
   linhas.push(SEP);
   linhas.push("");
 
-  // Contato
   linhas.push("DADOS DE CONTATO:");
   linhas.push(`* Nome: ${deliveryState.nome || "—"}`);
   linhas.push(`* Telefone: ${deliveryState.telefone || "—"}`);
@@ -540,7 +545,6 @@ function montarMensagemWhatsApp() {
   linhas.push(SEP);
   linhas.push("");
 
-  // Observação
   if (deliveryState.observacao) {
     linhas.push(`OBSERVAÇÃO: ${deliveryState.observacao}`);
     linhas.push("");
@@ -548,8 +552,7 @@ function montarMensagemWhatsApp() {
     linhas.push("");
   }
 
-  // Agradecimento
-  linhas.push("Obrigado pela preferência!");
+  linhas.push("Obrigado pela preferência! Deus vos abençoe!");
 
   return linhas.join("\n");
 }
@@ -597,23 +600,24 @@ function initAppListeners() {
     document.querySelector('.container')?.scrollIntoView({behavior:'smooth', block:'start'}); 
   });
 
-  // FINALIZAR: agora com fluxo especial para PIX
   btnFinalizar?.addEventListener('click', () => {
     if (!validarDadosAntesDeEnviar()) return;
 
-    // Se for PIX, abre modal com chave e botão copiar
     if (deliveryState.formaPagamento === "pix") {
       openPixAlert();
       return;
     }
 
-    // Demais formas: envia direto
     const texto = montarMensagemWhatsApp();
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`;
     window.open(url, '_blank');
+
+    cart = [];
+    saveCart();
+    renderCart();
+    closeCart();
   });
 
-  // PIX Modal — botões
   btnPixFechar?.addEventListener('click', closePixAlert);
   btnPixCancelar?.addEventListener('click', closePixAlert);
 
@@ -622,6 +626,11 @@ function initAppListeners() {
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`;
     window.open(url, '_blank');
     closePixAlert();
+
+    cart = [];
+    saveCart();
+    renderCart();
+    closeCart();
   });
 
   btnCopyPix?.addEventListener('click', () => {
@@ -631,7 +640,6 @@ function initAppListeners() {
     setTimeout(()=>btnCopyPix.textContent = old, 1400);
   });
 
-  /* Modal Monte sua Pizza */
   btnMontePizza?.addEventListener('click', () => {
     pizzaModal.classList.add('open');
     document.body.classList.add('lock-scroll');
@@ -652,7 +660,6 @@ function initAppListeners() {
     document.body.classList.remove('lock-scroll');
   });
 
-  /* Submit da pizza */
   pizzaForm?.addEventListener('submit', (e) => {
     e.preventDefault();
     const { precoFinal, nomePizza, tamanho, borda, sabores } = calculatePizzaPrice();
