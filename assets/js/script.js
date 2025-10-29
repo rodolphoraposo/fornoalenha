@@ -96,6 +96,7 @@ const tamanhoOptionsEl = document.getElementById('tamanho-options');
 const saborOptionsEl   = document.getElementById('sabor-options');
 const bordaOptionsEl   = document.getElementById('borda-options');
 const hintPrecosFamilia = document.getElementById('hint-precos-familia');
+const hintSabores = document.getElementById('hint-sabores');
 const btnVoltarPizza = document.getElementById('btn-voltar-pizza'); 
 
 const radiosModoEntrega = document.querySelectorAll('input[name="modo-entrega"]');
@@ -253,6 +254,7 @@ function populatePizzaOptions() {
   });
 
   updateHintPrecosFamilia();
+  updateHintSabores();
   handlePizzaChange();
 }
 
@@ -271,6 +273,18 @@ function updateHintPrecosFamilia() {
   if (esp)  partes.push(`Especiais: R$ ${esp.toFixed(2)}`);
   if (doce) partes.push(`Doces: R$ ${doce.toFixed(2)}`);
   hintPrecosFamilia.textContent = partes.join(" • ");
+}
+
+function updateHintSabores() {
+  const t = getSelectedTamanho();
+  if (!hintSabores) return;
+  if (t === "Brotinho") {
+    hintSabores.innerHTML = 'Para <b>Brotinho</b>, apenas <b>1 sabor</b> e <b>sem borda</b>.';
+  } else if (t === "Média" || t === "Grande") {
+    hintSabores.textContent = 'Pode escolher até 2 sabores (meio a meio).';
+  } else {
+    hintSabores.textContent = 'Selecione um tamanho para ver as regras de sabores.';
+  }
 }
 
 /*************************************************
@@ -293,6 +307,7 @@ function handlePizzaChange() {
   limitPizzaFlavors();
   toggleBordaByTamanho();
   updateHintPrecosFamilia();
+  updateHintSabores();
 
   if (getSelectedTamanho() === "Brotinho") {
     const sel = [...pizzaForm.querySelectorAll('input[name="sabor"]:checked')];
