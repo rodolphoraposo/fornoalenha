@@ -74,13 +74,14 @@ const deliveryState = {
   complemento: "",
   cep: "",
   referencia: "",
-  bairro: "", // Bairro vira campo de texto
+  bairro: "", 
   
   // CAMPOS PARA PAGAMENTO
   formaPagamento: "dinheiro", // dinheiro | debito | credito | pix
   valorPago: 0,
-  precisaTroco: false,
-  trocoPara: 0
+  
+  // NOVO CAMPO
+  observacao: "" 
 };
 
 
@@ -106,7 +107,6 @@ const saborOptionsEl   = document.getElementById('sabor-options');
 const bordaOptionsEl   = document.getElementById('borda-options');
 const hintPrecosFamilia = document.getElementById('hint-precos-familia');
 const btnVoltarPizza = document.getElementById('btn-voltar-pizza'); 
-// REMOVIDO: const comandaDigitalEl = document.getElementById('comanda-digital'); 
 
 // Campos de entrega/contato
 const radiosModoEntrega = document.querySelectorAll('input[name="modo-entrega"]');
@@ -122,11 +122,13 @@ const inputBairro = document.getElementById('bairro');
 
 // ELEMENTOS DE PAGAMENTO
 const selectFormaPagamento = document.getElementById('forma-pagamento-select');
+// Os fields 'dinheiro' e 'pix' permanecem para esconder/mostrar as opções
 const dinheiroFields = document.getElementById('dinheiro-fields');
 const pixFields = document.getElementById('pix-fields');
 const pixKeyEl = document.getElementById('pix-key');
-const inputTroco = document.getElementById('troco-para');
-const checkboxTroco = document.getElementById('precisa-troco');
+
+// NOVO: Campo de Observação
+const inputObservacao = document.getElementById('observacao'); 
 
 // Header / Nav
 const header = document.getElementById('site-header');
@@ -164,11 +166,6 @@ navLinks.forEach(a => {
     });
   }
 
-  // Garante que o input de troco está disabled se o checkbox não estiver marcado
-  if (inputTroco && checkboxTroco && !checkboxTroco.checked) {
-      inputTroco.disabled = true; 
-  }
-
   // Inicialização Entrega
   radiosModoEntrega.forEach(r => {
     r.addEventListener('change', () => {
@@ -192,6 +189,9 @@ navLinks.forEach(a => {
   inputNome?.addEventListener('input', e => deliveryState.nome = e.target.value);
   inputTelefone?.addEventListener('input', e => deliveryState.telefone = e.target.value);
   
+  // NOVO: Captura do campo de observação
+  inputObservacao?.addEventListener('input', e => deliveryState.observacao = e.target.value);
+  
   // Inicialização Pagamento (Lógica para o Select)
   if (selectFormaPagamento) {
       selectFormaPagamento.addEventListener('change', (e) => {
@@ -199,16 +199,8 @@ navLinks.forEach(a => {
           dinheiroFields.classList.add('hidden');
           pixFields.classList.add('hidden');
           
-          // Reseta campos de troco
-          deliveryState.precisaTroco = false;
-          deliveryState.trocoPara = 0;
-          if (checkboxTroco) checkboxTroco.checked = false;
-          if (inputTroco) inputTroco.value = "";
-          
           if (deliveryState.formaPagamento === "dinheiro") {
               dinheiroFields.classList.remove('hidden');
-              // Certifica que o input de troco está disabled ao selecionar 'Dinheiro'
-              if (inputTroco) inputTroco.disabled = true; 
           } else if (deliveryState.formaPagamento === "pix") {
               pixFields.classList.remove('hidden');
           }
@@ -216,30 +208,7 @@ navLinks.forEach(a => {
       });
   }
   
-  // Lógica de Troco
-  checkboxTroco?.addEventListener('change', e => {
-    deliveryState.precisaTroco = e.target.checked;
-    if (!e.target.checked) {
-      deliveryState.trocoPara = 0;
-      if (inputTroco) inputTroco.value = "";
-    }
-    // Controla o estado disabled
-    if (inputTroco) inputTroco.disabled = !e.target.checked; 
-  });
-  
-  inputTroco?.addEventListener('input', e => {
-    let valor = parseFloat(e.target.value.replace(',', '.')) || 0;
-    const total = cart.reduce((s,i)=>s+i.price*i.qty,0); 
-    
-    // Se o valor digitado for menor que o total, mas não zero, sugere o valor total para troco.
-    if (valor < total && valor !== 0) {
-      // Formata de volta para o padrão com vírgula para o usuário
-      e.target.value = total.toFixed(2).replace('.', ','); 
-      valor = total;
-    }
-    
-    deliveryState.trocoPara = valor;
-  });
+  // LÓGICA DE TROCO REMOVIDA
   
 })();
 
@@ -248,7 +217,6 @@ navLinks.forEach(a => {
  * UI DO MODAL — MONTE SUA PIZZA
  *************************************************/
 function renderGrupoSabores(titulo, lista, familia) {
-  // CORREÇÃO: Usando a lista de objetos SABORES (name)
   const itens = lista.map((sabor, i) => `
     <input type="checkbox" id="sabor-${familia}-${i}" name="sabor" value="${sabor.name}" data-familia="${familia}">
     <label for="sabor-${familia}-${i}">
@@ -279,7 +247,6 @@ function populatePizzaOptions() {
     ${renderGrupoSabores("Doces", SABORES.Doce, "Doce")}
   `;
 
-  // CORREÇÃO: Usando a lista de objetos BORDAS (name)
   bordaOptionsEl.innerHTML = BORDAS.map((borda, i) => `
     <input type="radio" id="borda-${i}" name="borda" value="${borda.name}" ${borda.name === "Nenhuma" ? "checked" : ""}>
     <label for="borda-${i}">
@@ -507,14 +474,7 @@ function montarMensagemWhatsApp() {
   // Detalhes da Forma de Pagamento
   linhas.push("*FORMA DE PAGAMENTO:*");
   if (deliveryState.formaPagamento === "dinheiro") {
-    linhas.push(`• Dinheiro`);
-    if (deliveryState.precisaTroco) {
-      const troco = deliveryState.trocoPara - total;
-      linhas.push(`• Precisa de troco para: *${formatBRL(deliveryState.trocoPara)}*`);
-      linhas.push(`• Troco a ser devolvido: *${formatBRL(troco)}*`);
-    } else {
-      linhas.push(`• Não precisa de troco.`);
-    }
+    linhas.push(`• Dinheiro (Pagamento em mãos)`); 
   } else if (deliveryState.formaPagamento === "debito") {
     linhas.push(`• Cartão de Débito (Máquina na entrega)`);
   } else if (deliveryState.formaPagamento === "credito") {
@@ -546,6 +506,12 @@ function montarMensagemWhatsApp() {
   linhas.push("*DADOS DE CONTATO:*");
   linhas.push(`• Nome: ${deliveryState.nome || "—"}`);
   linhas.push(`• Telefone: ${deliveryState.telefone || "—"}`);
+  
+  // NOVO: Adiciona Observação
+  if (deliveryState.observacao) {
+    linhas.push("");
+    linhas.push(`*OBSERVAÇÃO:* ${deliveryState.observacao}`);
+  }
 
   return linhas.join("\n");
 }
@@ -561,14 +527,7 @@ function validarDadosAntesDeEnviar() {
     }
   }
   
-  // Validação de Troco
-  if (deliveryState.formaPagamento === "dinheiro" && deliveryState.precisaTroco) {
-      const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
-      if (deliveryState.trocoPara < total) {
-          alert('O valor para troco deve ser maior ou igual ao total do pedido.');
-          return false;
-      }
-  }
+  // LÓGICA DE VALIDAÇÃO DE TROCO REMOVIDA
   
   // Confirmação para PIX
   if (deliveryState.formaPagamento === "pix") {
@@ -603,7 +562,7 @@ function initAppListeners() {
       document.querySelector('.container')?.scrollIntoView({behavior:'smooth', block:'start'}); 
     });
 
-    // LÓGICA DE ENVIO DO PEDIDO PARA WHATSAPP VIA MENSAGEM DE TEXTO (REVISADO)
+    // LÓGICA DE ENVIO DO PEDIDO PARA WHATSAPP VIA MENSAGEM DE TEXTO (CORRETO)
     btnFinalizar?.addEventListener('click', () => {
       if (!validarDadosAntesDeEnviar()) return;
       
@@ -616,8 +575,7 @@ function initAppListeners() {
       // 3. Abre o WhatsApp no navegador
       window.open(url, '_blank');
       
-      // NOTA: Recomenda-se adicionar aqui a lógica para limpar o carrinho 
-      // após o envio bem-sucedido para o WhatsApp (opcional, dependendo da UX desejada).
+      // Opcional: Limpar o carrinho após envio.
       /*
       cart = [];
       saveCart();
