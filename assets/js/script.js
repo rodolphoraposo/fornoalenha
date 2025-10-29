@@ -9,11 +9,11 @@ const PIX_KEY = "59.130.875/0001-50";
  * DADOS DO CARDÁPIO
  *************************************************/
 const PRECO_PIZZA = {
-  Tradicional: { Brotinho: 19.90, Média: 36.90, Grande: 46.90 },
-  Especial:    { Brotinho: 29.90, Média: 48.90, Grande: 58.90 },
-  Doce:        { Brotinho: null,  Média: 38.90, Grande: 48.90 }
+  Tradicional: { Brotinho: 20.90, Média: 37.90, Grande: 47.90 },
+  Especial:    { Brotinho: 30.90, Média: 49.90, Grande: 59.90 },
+  Doce:        { Brotinho: 25.90,  Média: 39.90, Grande: 49.90 }
 };
-const PRECO_BORDA = { Brotinho: 0.00, Média: 11.90, Grande: 14.90 };
+const PRECO_BORDA = { Brotinho: 0.00, Média: 12.90, Grande: 15.90 };
 
 const SABORES = {
   Tradicional: [
@@ -40,7 +40,6 @@ const SABORES = {
   ],
   Doce: [
     { name: "Brigadeiro", imagePath: "../imgs/pizza/brigadeiro.webp" },
-    { name: "Ovomaltine", imagePath: "../imgs/pizza/ovomaltine.webp" },
     { name: "M&M", imagePath: "../imgs/pizza/m&m.webp" },
     { name: "Banana", imagePath: "../imgs/pizza/banana.webp" },
     { name: "Romeu e Julieta", imagePath: "../imgs/pizza/romeuejulieta.webp" }
@@ -155,7 +154,6 @@ document.querySelectorAll('.main-nav .nav-link').forEach(a => {
     pixKeyEl.value = PIX_KEY;
     pixKeyEl.parentElement.addEventListener('click', () => {
       navigator.clipboard.writeText(PIX_KEY);
-      // feedback visual suave; evita alert bloqueante
       if (btnCopyPixInline) {
         const old = btnCopyPixInline.textContent;
         btnCopyPixInline.textContent = "Copiado!";
@@ -204,7 +202,6 @@ document.querySelectorAll('.main-nav .nav-link').forEach(a => {
   if (selectFormaPagamento) {
     selectFormaPagamento.addEventListener('change', (e) => {
       deliveryState.formaPagamento = e.target.value;
-      // mostra/esconde blocos
       if (typeof dinheiroFields !== "undefined" && dinheiroFields) dinheiroFields.classList.add('hidden');
       pixFields.classList.add('hidden');
       if (deliveryState.formaPagamento === "dinheiro") {
@@ -291,16 +288,30 @@ function getSelectedTamanho() {
   const r = pizzaForm.querySelector('input[name="tamanho"]:checked');
   return r ? r.value : null;
 }
+
+/* Limitação dinâmica: 1 sabor para Brotinho, 2 para demais tamanhos */
 function limitPizzaFlavors() {
-  const selected = pizzaForm.querySelectorAll('input[name="sabor"]:checked');
-  if (selected.length > 2) selected[selected.length - 1].checked = false;
+  const max = getSelectedTamanho() === "Brotinho" ? 1 : 2;
+  const selected = [...pizzaForm.querySelectorAll('input[name="sabor"]:checked')];
+  if (selected.length > max) {
+    // mantém os primeiros selecionados e desmarca o último clicado
+    selected.slice(max).forEach(inp => inp.checked = false);
+  }
 }
+
 function handlePizzaChange() {
   limitPizzaFlavors();
   toggleBordaByTamanho();
   updateHintPrecosFamilia();
+
+  // Se mudou para Brotinho e havia 2 sabores, garante apenas 1
+  if (getSelectedTamanho() === "Brotinho") {
+    const sel = [...pizzaForm.querySelectorAll('input[name="sabor"]:checked')];
+    sel.slice(1).forEach(inp => inp.checked = false);
+  }
   calculatePizzaPrice();
 }
+
 function toggleBordaByTamanho() {
   const t = getSelectedTamanho();
   const isBrotinho = t === "Brotinho";
@@ -314,6 +325,7 @@ function toggleBordaByTamanho() {
     }
   });
 }
+
 function calculatePizzaPrice() {
   const selectedTamanho = pizzaForm.querySelector('input[name="tamanho"]:checked');
   const selectedSabores = pizzaForm.querySelectorAll('input[name="sabor"]:checked');
@@ -424,67 +436,120 @@ function renderCart() {
 }
 
 /*************************************************
- * WHATSAPP — MENSAGEM
+ * WHATSAPP — MENSAGEM (modelo novo)
  *************************************************/
 function montarMensagemWhatsApp() {
   const linhas = [];
-  linhas.push("🍕 *NOVO PEDIDO — Forno a Lenha* 🍕");
-  linhas.push("");
-  linhas.push("*ITENS DO PEDIDO:*");
+  const SEP = "====================================";
 
+  // Cabeçalho
+  linhas.push("🍕 NOVO PEDIDO — Forno a Lenha 🍕");
+  linhas.push("");
+  linhas.push(SEP);
+  linhas.push("");
+  linhas.push("ITENS DO PEDIDO:");
+  linhas.push("");
+
+  // Itens
   cart.forEach(i => {
-    const meta = [];
-    if (i.meta?.tamanho) meta.push(`Tamanho: ${i.meta.tamanho}`);
-    if (i.meta?.borda && i.meta?.borda !== "Nenhuma") meta.push(`Borda: ${i.meta.borda}`);
-    if (i.meta?.sabores?.length) meta.push(`Sabores: ${i.meta.sabores.join(' / ')}`);
-    linhas.push(`• ${i.qty}x ${i.name}${meta.length ? ` (${meta.join(' • ')})` : ''} — ${formatBRL(i.price*i.qty)}`);
+    const totalItem = i.price * i.qty;
+    // Título do item (nome + tamanho no nome) — exibe no padrão solicitado
+    let titulo = `• ${i.qty}x ${i.name.replace(/\s+\(.+\)$/, '').trim()}`;
+    // Se houver tamanho no meta, exibir junto ao título
+    if (i.meta?.tamanho) {
+      // Ex.: "Pizza Grande"
+      const tipo = (i.name.toLowerCase().includes("pizza") ? "Pizza " : "");
+      titulo = `• ${i.qty}x ${tipo}${i.meta.tamanho}`;
+    }
+    titulo += ` - ${formatBRL(totalItem)}`;
+    linhas.push(titulo);
+
+    // Sabores — se 2 sabores, usa "¹/²"
+    if (i.meta?.sabores?.length) {
+      if (i.meta.sabores.length === 2) {
+        linhas.push(`¹/² ${i.meta.sabores[0]}`);
+        linhas.push(`¹/² ${i.meta.sabores[1]}`);
+      } else {
+        // único sabor
+        linhas.push(`${i.meta.sabores[0]}`);
+      }
+    }
+
+    // Borda (em linha separada com seu preço específico)
+    if (i.meta?.borda && i.meta.borda !== "Nenhuma" && i.meta?.tamanho) {
+      const adicionalBorda = PRECO_BORDA[i.meta.tamanho] || 0;
+      if (adicionalBorda > 0) {
+        linhas.push("");
+        linhas.push(`• Borda: ${i.meta.borda} - ${formatBRL(adicionalBorda)}`);
+      }
+    }
+
+    linhas.push(""); // espaço entre itens
   });
 
+  // Totais
   const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
   const total = subtotal;
 
+  linhas.push(SEP);
   linhas.push("");
-  linhas.push(`*SUBTOTAL: ${formatBRL(subtotal)}*`);
-  linhas.push(`*TOTAL: ${formatBRL(total)}*`);
+  linhas.push(`SUBTOTAL: ${formatBRL(subtotal)}`);
+  linhas.push(`TOTAL: ${formatBRL(total)}`);
+  linhas.push("");
+  linhas.push(SEP);
   linhas.push("");
   
   // Forma de pagamento
-  linhas.push("*FORMA DE PAGAMENTO:*");
+  linhas.push("FORMA DE PAGAMENTO:");
   if (deliveryState.formaPagamento === "dinheiro") {
-    linhas.push(`• Dinheiro (Pagamento em mãos)`); 
+    linhas.push("* Dinheiro (Pagamento em mãos)");
   } else if (deliveryState.formaPagamento === "debito") {
-    linhas.push(`• Cartão de Débito (Máquina na entrega)`);
+    linhas.push("* Cartão de Débito (Máquina na entrega)");
   } else if (deliveryState.formaPagamento === "credito") {
-    linhas.push(`• Cartão de Crédito (Máquina na entrega)`);
+    linhas.push("* Cartão de Crédito (Máquina na entrega)");
   } else if (deliveryState.formaPagamento === "pix") {
-    linhas.push(`• PIX (Comprovante será enviado em seguida)`);
-    linhas.push(`• Chave PIX da empresa: ${PIX_KEY}`);
+    linhas.push("* PIX (Comprovante em anexo)");
   }
   linhas.push("");
+  linhas.push(SEP);
+  linhas.push("");
 
-  linhas.push(`*ENTREGA:* ${deliveryState.modo === "delivery" ? "Delivery" : "Retirada no balcão"}`);
+  // Entrega
+  linhas.push(`ENTREGA: ${deliveryState.modo === "delivery" ? "Delivery" : "Retirada no balcão"}`);
   if (deliveryState.modo === "delivery") {
-    linhas.push("*DADOS DA ENTREGA:*");
-    const endereco = [
-      deliveryState.rua ? `Rua/Avenida: ${deliveryState.rua}` : null,
-      deliveryState.numero ? `Nº: ${deliveryState.numero}` : null,
-      deliveryState.complemento ? `Comp.: ${deliveryState.complemento}` : null,
-      deliveryState.bairro ? `Bairro: ${deliveryState.bairro}` : null,
-      deliveryState.cep ? `CEP: ${deliveryState.cep}` : null,
-      deliveryState.referencia ? `Referência: ${deliveryState.referencia}` : null
-    ].filter(Boolean).join("\n• ");
-    linhas.push(endereco ? `• ${endereco}` : "• Endereço: —");
+    linhas.push("DADOS DA ENTREGA:");
+    if (deliveryState.rua) linhas.push(`* Rua/Avenida: ${deliveryState.rua}`);
+    if (deliveryState.numero) linhas.push(`* Nº: ${deliveryState.numero}`);
+    if (deliveryState.complemento) linhas.push(`* Comp.: ${deliveryState.complemento}`);
+    if (deliveryState.bairro) linhas.push(`* Bairro: ${deliveryState.bairro}`);
+    if (deliveryState.cep) linhas.push(`* CEP: ${deliveryState.cep}`);
+    if (deliveryState.referencia) {
+      // Se a referência for muito longa, pode conter quebra natural
+      linhas.push(`* Referência: ${deliveryState.referencia}`);
+    }
+    linhas.push("");
+  }
+  linhas.push(SEP);
+  linhas.push("");
+
+  // Contato
+  linhas.push("DADOS DE CONTATO:");
+  linhas.push(`* Nome: ${deliveryState.nome || "—"}`);
+  linhas.push(`* Telefone: ${deliveryState.telefone || "—"}`);
+  linhas.push("");
+  linhas.push(SEP);
+  linhas.push("");
+
+  // Observação
+  if (deliveryState.observacao) {
+    linhas.push(`OBSERVAÇÃO: ${deliveryState.observacao}`);
+    linhas.push("");
+    linhas.push(SEP);
+    linhas.push("");
   }
 
-  linhas.push("");
-  linhas.push("*DADOS DE CONTATO:*");
-  linhas.push(`• Nome: ${deliveryState.nome || "—"}`);
-  linhas.push(`• Telefone: ${deliveryState.telefone || "—"}`);
-  
-  if (deliveryState.observacao) {
-    linhas.push("");
-    linhas.push(`*OBSERVAÇÃO:* ${deliveryState.observacao}`);
-  }
+  // Agradecimento
+  linhas.push("Obrigado pela preferência!");
 
   return linhas.join("\n");
 }

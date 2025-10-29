@@ -68,13 +68,25 @@ section .tabelas { scroll-margin-top: 76px; }
 .secao { margin:28px 0; }
 .secao h2 { margin:0 0 12px 0; }
 
+/* =========================================
+   CARDS — padronização de altura/alinhamento
+   ========================================= */
 .cards { display:flex; gap:16px; overflow-x:scroll; padding-bottom:20px; -webkit-overflow-scrolling:touch; scroll-snap-type:x mandatory; }
-.card { flex-shrink:0; width:280px; scroll-snap-align:start; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:6px; }
+.card { 
+  flex-shrink:0; width:280px; scroll-snap-align:start; 
+  background:var(--card); border:1px solid var(--line); border-radius:16px; 
+  padding:14px; display:flex; flex-direction:column; gap:6px;
+}
 .card-img { width:100%; height:180px; object-fit:cover; border-radius:10px; background:#20222b; border:1px dashed var(--line); margin-bottom:8px; }
-.card h3 { margin:0; }
-.card p { margin:0; color:var(--muted); }
 
-.price { margin-top:6px; display:inline-block; }
+/* Mantém títulos alinhados mesmo quando têm 1 ou 2 linhas */
+.card h3 { margin:0; min-height:2.4em; display:flex; align-items:flex-start; }
+
+/* Qualquer descrição/lista cresce para “empurrar” preço/botão pro fundo */
+.card > p, .card > ul { margin:0; color:var(--muted); flex-grow:1; }
+
+/* Preço sempre gruda no rodapé do card */
+.price { margin-top:auto; display:inline-block; }
 
 .btn { cursor:pointer; border:none; border-radius:10px; padding:10px 14px; }
 .btn-primary { background:var(--acc); font-weight:700; }
@@ -129,7 +141,6 @@ section .tabelas { scroll-margin-top: 76px; }
 
 .pix-tip { color:var(--muted); font-size:12px; margin:6px 0 0; }
 
-/* Caixinha padronizada (Observações) */
 .section-box{
   background:var(--card);
   border:1px dashed var(--line);
@@ -139,7 +150,6 @@ section .tabelas { scroll-margin-top: 76px; }
 }
 .section-box h3{ margin:0 0 8px 0; }
 
-/* Linha copiar (input + botão) */
 .copy-row .copy-inline{
   display:grid;
   grid-template-columns: 1fr auto;
@@ -147,7 +157,7 @@ section .tabelas { scroll-margin-top: 76px; }
   align-items:center;
 }
 
-/* Modal (já existente) */
+/* Modal */
 .modal { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:500; }
 .modal.open { display:flex; }
 .modal-content{ background:#0e1016; border:1px solid var(--line); border-radius:16px; max-width:760px; width:100%; padding:0; max-height:90dvh; overflow:auto; -webkit-overflow-scrolling:touch; }
@@ -178,7 +188,6 @@ legend { padding:0 6px; color:#d7dae1; }
 
 .rodape { padding:24px 16px; border-top:1px solid var(--line); text-align:center; color:var(--muted); }
 
-/* Acessibilidade: esconder label visual mas manter para leitores de tela */
 .sr-only{
   position:absolute !important;
   width:1px; height:1px;
@@ -204,9 +213,9 @@ legend { padding:0 6px; color:#d7dae1; }
 .comanda-active { display:block !important; }
 
 /* =========================================
-   RESPONSIVIDADE
+   RESPONSIVIDADE (breakpoints pedidos)
    ========================================= */
-@media (max-width:760px){
+@media (max-width: 768px){
   .hero{grid-template-columns:1fr}
   .hero-art{display:none}
   .grid{grid-template-columns:1fr}
@@ -226,12 +235,30 @@ legend { padding:0 6px; color:#d7dae1; }
   .sabor-img { height:60px; }
 }
 
+/* já existia 440px — mantido e afinado */
 @media (max-width:440px){
   .btn{padding:12px}
   .cart-item .meta{font-size:12px}
   .field label{font-size:13px}
 }
 
+/* novo ajuste extra-pequeno 368px */
+@media (max-width:368px){
+  .container { padding: 90px 10px 0; }
+  .topbar { padding: 6px 8px; }
+  .logo { width:60px; height:60px; }
+  .main-nav .nav-link { font-size:1.6rem; }
+  .card { width: 90vw; }
+  .card-img { height:160px; }
+}
+
+/* telas grandes >1028px */
+@media (min-width:1028px){
+  .container { max-width:1200px; }
+  .card { width:300px; }
+}
+
+/* ultra largo 1280+ (já existia — mantido) */
 @media (min-width:1280px){
   .cart{ width:420px; }
 }
