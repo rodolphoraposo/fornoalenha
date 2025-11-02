@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Admin — Pedidos | Forno à Lenha</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="../icon/fornoalenha.ico">
+  <style>
+    :root{ --bg:#0f0f10; --panel:#16171a; --muted:#8b8d94; --acc:#facc15; --ok:#22c55e; }
+    *{ box-sizing:border-box }
+    body{ margin:0; font:14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial; color:#fff; background:linear-gradient(180deg,#0e0f12 0,#0b0c0e 60%,#070708 100%); }
+    header{ position:sticky; top:0; background:rgba(0,0,0,.6); backdrop-filter: blur(8px); border-bottom:1px solid #222; }
+    .wrap{ max-width:1100px; margin:0 auto; padding:16px; }
+    h1{ margin:0 0 8px 0; font-size:20px }
+    .controls{ display:flex; gap:12px; flex-wrap:wrap; align-items:end; margin:8px 0 16px }
+    .field{ display:grid; gap:6px }
+    label{ color:var(--muted); font-size:12px }
+    input[type="date"]{ background:#101114; color:#fff; border:1px solid #2a2c31; border-radius:10px; padding:8px 10px; outline:none }
+    button, a.btn{ appearance:none; border:0; background:#fff; color:#000; font-weight:600; border-radius:10px; padding:9px 12px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px }
+    .btn-secondary{ background:#1e1f24; color:#fff; border:1px solid #2b2e35 }
+    .btn-accent{ background:var(--acc); color:#111 }
+    .grid{ display:grid; gap:14px }
+    .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px }
+    .card{ background:var(--panel); border:1px solid #222; border-radius:16px; padding:12px }
+    .muted{ color:var(--muted) }
+    table{ width:100%; border-collapse:collapse; border-spacing:0 }
+    th, td{ padding:10px 8px; border-bottom:1px solid #222; text-align:left; vertical-align:top }
+    th{ font-size:12px; color:var(--muted); font-weight:600 }
+    tr:hover td{ background:#141519 }
+    .nowrap{ white-space:nowrap }
+    .right{ text-align:right }
+    .pill{ display:inline-block; padding:3px 8px; border-radius:999px; border:1px solid #2b2e35; background:#131419; font-size:12px; color:#e2e8f0 }
+    .ok{ color:var(--ok) }
+    .footer-actions{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:12px }
+    @media (max-width: 860px){
+      .stats{ grid-template-columns:1fr }
+      .hide-sm{ display:none }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>📦 Pedidos — Painel</h1>
+      <p class="muted" style="margin:0">Somente leitura. Filtre por data, veja totais e exporte CSV.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="controls">
+      <div class="field">
+        <label>De</label>
+        <input type="date" id="f-from">
+      </div>
+      <div class="field">
+        <label>Até</label>
+        <input type="date" id="f-to">
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button id="btn-apply" class="btn-secondary">Aplicar filtro</button>
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button id="btn-clear" class="btn-secondary">Limpar</button>
+      </div>
+      <div class="field" style="margin-left:auto">
+        <label>&nbsp;</label>
+        <a id="btn-csv" class="btn btn-accent" href="http://localhost:3333/api/orders/csv" target="_blank" rel="noopener">⬇️ Baixar CSV</a>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="card">
+        <div class="muted">Pedidos</div>
+        <div id="stat-count" style="font-size:22px;font-weight:800">—</div>
+      </div>
+      <div class="card">
+        <div class="muted">Itens</div>
+        <div id="stat-items" style="font-size:22px;font-weight:800">—</div>
+      </div>
+      <div class="card">
+        <div class="muted">Total (R$)</div>
+        <div id="stat-total" style="font-size:22px;font-weight:800">—</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="footer-actions">
+        <span class="muted" id="hint-range">Exibindo tudo</span>
+        <span><span class="pill">API</span> <span id="api-state" class="muted"></span></span>
+      </div>
+
+      <div style="overflow:auto; margin-top:8px">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th class="nowrap">#</th>
+              <th class="nowrap hide-sm">Criado em</th>
+              <th>Cliente</th>
+              <th class="hide-sm">Entrega</th>
+              <th>Item</th>
+              <th class="right">Qtd</th>
+              <th class="right">Valor</th>
+              <th class="right">Total</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <tr><td colspan="8" class="muted">Carregando…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/admin.js" defer></script>
+</body>
+</html>

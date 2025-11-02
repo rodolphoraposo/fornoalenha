@@ -17,42 +17,42 @@ const PRECO_BORDA = { Brotinho: 0.00, Média: 12.90, Grande: 15.90 };
 
 const SABORES = {
   Tradicional: [
-    { name: "Mussarela", imagePath: "../imgs/pizza/mussarela.webp" },
-    { name: "Mista", imagePath: "../imgs/pizza/mista.webp" },
-    { name: "Calabresa", imagePath: "../imgs/pizza/calabresa.webp" },
-    { name: "Milho", imagePath: "../imgs/pizza/milho.webp" },
-    { name: "Frango", imagePath: "../imgs/pizza/frango.webp" },
-    { name: "Marguerita", imagePath: "../imgs/pizza/marguerita.webp" },
-    { name: "Baiana", imagePath: "../imgs/pizza/baiana.webp" },
-    { name: "Napolitana", imagePath: "../imgs/pizza/napolitana.webp" }
+    { name: "Mussarela", imagePath: "../imgs/pizzas/mussarela.webp" },
+    { name: "Mista", imagePath: "../imgs/pizzas/mista.webp" },
+    { name: "Calabresa", imagePath: "../imgs/pizzas/calabresa.webp" },
+    { name: "Milho", imagePath: "../imgs/pizzas/milho.webp" },
+    { name: "Frango", imagePath: "../imgs/pizzas/frango.webp" },
+    { name: "Marguerita", imagePath: "../imgs/pizzas/marguerita.webp" },
+    { name: "Baiana", imagePath: "../imgs/pizzas/baiana.webp" },
+    { name: "Napolitana", imagePath: "../imgs/pizzas/napolitana.webp" }
   ],
   Especial: [
-    { name: "Frango com Catupiry", imagePath: "../imgs/pizza/frangocatupiry.webp" },
-    { name: "Carne de Sol", imagePath: "../imgs/pizza/carnedesol.webp" },
-    { name: "Nordestina", imagePath: "../imgs/pizza/nordestina.webp" },
-    { name: "Camarão", imagePath: "../imgs/pizza/camarao.webp" },
-    { name: "Portuguesa", imagePath: "../imgs/pizza/portuguesa.webp" },
-    { name: "Lombo Canadense", imagePath: "../imgs/pizza/lombocanadense.webp" },
-    { name: "Quatro Queijos", imagePath: "../imgs/pizza/quatroqueijos.webp" },
-    { name: "Bacon", imagePath: "../imgs/pizza/bacon.webp" },
-    { name: "Atum", imagePath: "../imgs/pizza/atum.webp" },
-    { name: "Catupirela", imagePath: "../imgs/pizza/catupirela.webp" }
+    { name: "Frango com Catupiry", imagePath: "../imgs/pizzas/frangocatupiry.webp" },
+    { name: "Carne de Sol", imagePath: "../imgs/pizzas/carnedesol.webp" },
+    { name: "Nordestina", imagePath: "../imgs/pizzas/nordestina.webp" },
+    { name: "Camarão", imagePath: "../imgs/pizzas/camarao.webp" },
+    { name: "Portuguesa", imagePath: "../imgs/pizzas/portuguesa.webp" },
+    { name: "Lombo Canadense", imagePath: "../imgs/pizzas/lombocanadense.webp" },
+    { name: "Quatro Queijos", imagePath: "../imgs/pizzas/quatroqueijos.webp" },
+    { name: "Bacon", imagePath: "../imgs/pizzas/bacon.webp" },
+    { name: "Atum", imagePath: "../imgs/pizzas/atum.webp" },
+    { name: "Catupirela", imagePath: "../imgs/pizzas/catupirela.webp" }
   ],
   Doce: [
-    { name: "Brigadeiro", imagePath: "../imgs/pizza/brigadeiro.webp" },
-    { name: "M&M", imagePath: "../imgs/pizza/m&m.webp" },
-    { name: "Banana", imagePath: "../imgs/pizza/banana.webp" },
-    { name: "Romeu e Julieta", imagePath: "../imgs/pizza/romeuejulieta.webp" }
+    { name: "Brigadeiro", imagePath: "../imgs/pizzas/brigadeiro.webp" },
+    { name: "M&M", imagePath: "../imgs/pizzas/m&m.webp" },
+    { name: "Banana", imagePath: "../imgs/pizzas/banana.webp" },
+    { name: "Romeu e Julieta", imagePath: "../imgs/pizzas/romeuejulieta.webp" }
   ]
 };
 
 const BORDAS = [
-  { name: "Nenhuma", imagePath: "../imgs/borda/nenhuma.png" },
-  { name: "Mussarela", imagePath: "../imgs/borda/mussarela.webp" },
-  { name: "Cheddar", imagePath: "../imgs/borda/cheddar.webp" },
-  { name: "Catupiry", imagePath: "../imgs/borda/catupiry.webp" },
-  { name: "Creme Cheese", imagePath: "../imgs/borda/cremecheese.webp" },
-  { name: "Chocolate", imagePath: "../imgs/borda/chocolate.webp" }
+  { name: "Nenhuma", imagePath: "../imgs/bordas/nenhuma.png" },
+  { name: "Mussarela", imagePath: "../imgs/bordas/mussarela.webp" },
+  { name: "Cheddar", imagePath: "../imgs/bordas/cheddar.webp" },
+  { name: "Catupiry", imagePath: "../imgs/bordas/catupiry.webp" },
+  { name: "Creme Cheese", imagePath: "../imgs/bordas/cremecheese.webp" },
+  { name: "Chocolate", imagePath: "../imgs/bordas/chocolate.webp" }
 ];
 const TAMANHOS = ["Brotinho", "Média", "Grande"];
 
@@ -459,6 +459,59 @@ function getPrecoBasePizza(tamanho, sabores) {
   return maior;
 }
 
+// ===== BACKEND ORDER HELPER =====
+const API_BASE_ORDERS = 'http://localhost:3333';
+
+function buildOrderPayload() {
+  // Usa os estados que você já tem: `cart` e `deliveryState`
+  const items = cart.map(i => ({
+    name: i.name,
+    price: Number(i.price),
+    qty: Number(i.qty),
+    // se quiser enviar metadados (ex.: tamanho/borda/sabores), mantém:
+    meta: i.meta || null
+  }));
+
+  const customer = {
+    name: deliveryState.nome || '',
+    phone: deliveryState.telefone || ''
+  };
+
+  const delivery = {
+    mode: deliveryState.modo === 'delivery' ? 'delivery' : 'retirada',
+    address: deliveryState.modo === 'delivery' ? {
+      bairro: deliveryState.bairro || '',
+      rua: deliveryState.rua || '',
+      numero: deliveryState.numero || '',
+      complemento: deliveryState.complemento || '',
+      cep: deliveryState.cep || '',
+      referencia: deliveryState.referencia || ''
+    } : null
+  };
+
+  const payment = {
+    method: (['dinheiro','debito','credito','pix'].includes(deliveryState.formaPagamento) ? deliveryState.formaPagamento : 'dinheiro')
+  };
+
+  const notes = deliveryState.observacao || '';
+
+  return { items, customer, delivery, payment, notes };
+}
+
+async function postOrder(payload) {
+  const res = await fetch(`${API_BASE_ORDERS}/api/orders`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = (data && (data.errors?.join('\n') || data.error)) || `HTTP ${res.status}`;
+    throw new Error(msg);
+  }
+  return data; // { ok: true, orderId, message }
+}
+
 function montarMensagemWhatsApp() {
   const linhas = [];
   const SEP = "====================================";
@@ -615,12 +668,24 @@ function initAppListeners() {
     document.querySelector('.container')?.scrollIntoView({behavior:'smooth', block:'start'}); 
   });
 
-  btnFinalizar?.addEventListener('click', () => {
+  btnFinalizar?.addEventListener('click', async () => {
     if (!validarDadosAntesDeEnviar()) return;
 
     if (deliveryState.formaPagamento === "pix") {
       openPixAlert();
       return;
+    }
+
+    try {
+      const payload = buildOrderPayload();
+      const resp = await postOrder(payload);
+      console.log('Pedido registrado no back:', resp);
+      if (resp?.ok && resp?.orderId) {
+      setLastOrderId(resp.orderId);
+      showOrderBanner(resp.orderId);
+  }
+    } catch (err) {
+      console.warn('Falha ao registrar pedido no back:', err?.message || err);
     }
 
     const texto = montarMensagemWhatsApp();
@@ -636,7 +701,19 @@ function initAppListeners() {
   btnPixFechar?.addEventListener('click', closePixAlert);
   btnPixCancelar?.addEventListener('click', closePixAlert);
 
-  btnPixContinuar?.addEventListener('click', () => {
+  btnPixContinuar?.addEventListener('click', async () => {
+    try {
+      const payload = buildOrderPayload();
+      const resp = await postOrder(payload);
+      console.log('Pedido (PIX) registrado no back:', resp);
+      if (resp?.ok && resp?.orderId) {
+      setLastOrderId(resp.orderId);
+      showOrderBanner(resp.orderId);
+  }
+    } catch (err) {
+      console.warn('Falha ao registrar pedido (PIX) no back:', err?.message || err);
+    }
+
     const texto = montarMensagemWhatsApp();
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`;
     window.open(url, '_blank');
@@ -686,8 +763,118 @@ function initAppListeners() {
   });
 }
 
+// ===== PROTOCOLO DO PEDIDO (orderId) =====
+function setLastOrderId(id) {
+  try { localStorage.setItem('forno_last_order_id', String(id)); } catch {}
+}
+function getLastOrderId() {
+  try { return localStorage.getItem('forno_last_order_id'); } catch { return null; }
+}
+
+/**
+ * Cria/atualiza um banner discreto no topo da tela.
+ * Não requer mudanças no HTML: é injetado dinamicamente.
+ */
+function showOrderBanner(orderId) {
+  let banner = document.getElementById('order-protocol-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'order-protocol-banner';
+    banner.setAttribute('role', 'status');
+    banner.style.cssText = `
+      position: fixed; top: 8px; left: 50%; transform: translateX(-50%);
+      background: #111; color: #fff; padding: 8px 12px; border-radius: 999px;
+      font: 600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      box-shadow: 0 6px 20px rgba(0,0,0,.25); z-index: 9999; opacity: 0;
+      transition: opacity .25s ease, transform .25s ease;
+    `;
+    document.body.appendChild(banner);
+    // pequena animação de entrada
+    requestAnimationFrame(() => {
+      banner.style.opacity = '1';
+      banner.style.transform = 'translateX(-50%) translateY(0)';
+    });
+  }
+  banner.textContent = `✅ Protocolo do pedido: #${orderId}`;
+  // some sozinho depois de 6s
+  clearTimeout(banner._hideTimer);
+  banner._hideTimer = setTimeout(() => {
+    banner.style.opacity = '0';
+    setTimeout(() => banner.remove(), 300);
+  }, 6000);
+}
+
 /*************************************************
  * INICIALIZAÇÃO DA APLICAÇÃO
  *************************************************/
 renderCart();
 initAppListeners();
+
+/*************************************************
+ * INTEGRAÇÃO COM A API DO CARDÁPIO (dinâmico)
+ * - Preenche Sushis, Esfihas e Bebidas a partir do back-end
+ * - Mantém visual dos seus cards
+ *************************************************/
+(function integrateMenuAPI(){
+  const API_BASE = 'http://localhost:3333';
+
+  const grids = {
+    sushis:  document.querySelector('[data-js="grid-sushis"]'),
+    esfihas: document.querySelector('[data-js="grid-esfihas"]'),
+    bebidas: document.querySelector('[data-js="grid-bebidas"]')
+  };
+
+  function currencyBRL(v){
+    const n = Number(v);
+    return isNaN(n) ? 'R$ 0,00' : n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+  }
+
+  function makeMenuCard(item){
+    const nome = String(item?.nome ?? '');
+    const preco = Number(item?.preco ?? 0);
+    const imagem = String(item?.imagem ?? '');
+    const desc = String(item?.descricao ?? '');
+
+    // Usa suas classes atuais: .card, .card-img, .price, .btn.btn-add
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <img class="card-img" src="${imagem}" alt="${nome}" loading="lazy">
+      <h3>${nome}</h3>
+      ${desc ? `<p>${desc}</p>` : ''}
+      <span class="price">${currencyBRL(preco)}</span>
+      <button class="btn btn-add" type="button">Adicionar</button>
+    `;
+
+    div.querySelector('.btn.btn-add').addEventListener('click', () => {
+      addToCart(nome, preco, 1);
+    });
+    return div;
+  }
+
+  function renderList(container, items){
+    if (!container || !Array.isArray(items)) return;
+    container.innerHTML = '';
+    const frag = document.createDocumentFragment();
+    items.forEach(i => frag.appendChild(makeMenuCard(i)));
+    container.appendChild(frag);
+  }
+
+  async function load(){
+    try{
+      const res = await fetch(`${API_BASE}/api/menu`, { headers: { Accept: 'application/json' }});
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+
+      if (grids.sushis  && data?.data?.sushis)  renderList(grids.sushis,  data.data.sushis);
+      if (grids.esfihas && data?.data?.esfihas) renderList(grids.esfihas, data.data.esfihas);
+      if (grids.bebidas && data?.data?.bebidas) renderList(grids.bebidas, data.data.bebidas);
+    } catch (err){
+      console.error('Falha ao carregar menu da API:', err);
+      // Em caso de erro, mantemos o conteúdo (se houver) e não quebramos o layout
+    }
+  }
+
+  // Aguarda DOM pronto (por segurança, já que o script está com defer)
+  document.addEventListener('DOMContentLoaded', load);
+})();

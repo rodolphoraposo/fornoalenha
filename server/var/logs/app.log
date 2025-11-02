@@ -1,0 +1,20 @@
+{"ts":"2025-10-31T19:32:09.427Z","level":"info","message":"req","method":"GET","url":"/api/menu","ip":"::1"}
+{"ts":"2025-10-31T19:32:09.479Z","level":"info","message":"::1 - - [31/Oct/2025:19:32:09 +0000] \"GET /api/menu HTTP/1.1\" 304 - \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:32:22.740Z","level":"info","message":"req","method":"OPTIONS","url":"/api/orders","ip":"::1"}
+{"ts":"2025-10-31T19:32:22.747Z","level":"info","message":"req","method":"POST","url":"/api/orders","ip":"::1"}
+{"ts":"2025-10-31T19:32:22.814Z","level":"info","message":"::1 - - [31/Oct/2025:19:32:22 +0000] \"POST /api/orders HTTP/1.1\" 201 52 \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:32:23.032Z","level":"info","message":"req","method":"GET","url":"/api/menu","ip":"::1"}
+{"ts":"2025-10-31T19:32:23.035Z","level":"info","message":"::1 - - [31/Oct/2025:19:32:23 +0000] \"GET /api/menu HTTP/1.1\" 304 - \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:32:38.025Z","level":"info","message":"req","method":"GET","url":"/api/menu","ip":"::1"}
+{"ts":"2025-10-31T19:32:38.035Z","level":"info","message":"::1 - - [31/Oct/2025:19:32:38 +0000] \"GET /api/menu HTTP/1.1\" 304 - \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:33:11.650Z","level":"info","message":"req","method":"GET","url":"/api/orders/csv","ip":"::1"}
+{"ts":"2025-10-31T19:33:11.661Z","level":"info","message":"::1 - - [31/Oct/2025:19:33:11 +0000] \"GET /api/orders/csv HTTP/1.1\" 200 394 \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:34:05.102Z","level":"info","message":"req","method":"GET","url":"/api/menu","ip":"::1"}
+{"ts":"2025-10-31T19:34:05.110Z","level":"info","message":"::1 - - [31/Oct/2025:19:34:05 +0000] \"GET /api/menu HTTP/1.1\" 304 - \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:38:52.728Z","level":"info","message":"req","method":"OPTIONS","url":"/api/orders","ip":"::1"}
+{"ts":"2025-10-31T19:38:52.761Z","level":"info","message":"req","method":"POST","url":"/api/orders","ip":"::1"}
+{"ts":"2025-10-31T19:38:52.890Z","level":"info","message":"::1 - - [31/Oct/2025:19:38:52 +0000] \"POST /api/orders HTTP/1.1\" 201 52 \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:38:53.114Z","level":"info","message":"req","method":"GET","url":"/api/menu","ip":"::1"}
+{"ts":"2025-10-31T19:38:53.118Z","level":"info","message":"::1 - - [31/Oct/2025:19:38:53 +0000] \"GET /api/menu HTTP/1.1\" 304 - \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}
+{"ts":"2025-10-31T19:39:01.140Z","level":"info","message":"req","method":"GET","url":"/api/menu","ip":"::1"}
+{"ts":"2025-10-31T19:39:01.144Z","level":"info","message":"::1 - - [31/Oct/2025:19:39:01 +0000] \"GET /api/menu HTTP/1.1\" 304 - \"http://127.0.0.1:5500/\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36\""}

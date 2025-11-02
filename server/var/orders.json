@@ -1,0 +1,77 @@
+{
+  "lastId": 3,
+  "data": [
+    {
+      "id": 1,
+      "createdAt": "2025-10-31T18:55:52.477Z",
+      "items": [
+        {
+          "name": "Esfiha Mista",
+          "price": 3.9,
+          "qty": 1,
+          "meta": {}
+        }
+      ],
+      "customer": {
+        "name": "Rodolpho Silva Rapôso",
+        "phone": "82994336126"
+      },
+      "delivery": {
+        "mode": "retirada",
+        "address": null
+      },
+      "payment": {
+        "method": "dinheiro"
+      },
+      "notes": ""
+    },
+    {
+      "id": 2,
+      "createdAt": "2025-10-31T19:32:22.801Z",
+      "items": [
+        {
+          "name": "Coca-Cola 350ml",
+          "price": 7.9,
+          "qty": 2,
+          "meta": {}
+        }
+      ],
+      "customer": {
+        "name": "Rodolpho Silva Rapôso",
+        "phone": "82994336126"
+      },
+      "delivery": {
+        "mode": "retirada",
+        "address": null
+      },
+      "payment": {
+        "method": "credito"
+      },
+      "notes": ""
+    },
+    {
+      "id": 3,
+      "createdAt": "2025-10-31T19:38:52.835Z",
+      "items": [
+        {
+          "name": "Coca-Cola Zero 350ml",
+          "price": 7.9,
+          "qty": 1,
+          "meta": {}
+        }
+      ],
+      "customer": {
+        "name": "Rodolpho Silva Rapôso",
+        "phone": "82994336126"
+      },
+      "delivery": {
+        "mode": "retirada",
+        "address": null
+      },
+      "payment": {
+        "method": "dinheiro"
+      },
+      "notes": ""
+    }
+  ]
+}
