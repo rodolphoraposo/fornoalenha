@@ -30,7 +30,7 @@ A arquitetura foi escolhida para garantir **máxima performance**, **baixo custo
 
 | Decisão | Porquê |
 | :--- | :--- |
-| **Tecnologias Estáticas** (HTML, CSS, JS Puro) | **Performance:** Carregamento ultra-rápido (baixo *latency*). **Custo:** Hospedagem gratuita e simples (ex: Vercel/Netlify). |
+| **Tecnologias Estáticas** (HTML5, CSS3, JS Puro) | **Performance:** Carregamento ultra-rápido (baixo *latency*). **Custo:** Hospedagem gratuita e simples (ex: Vercel/Netlify). |
 | **Integração Direta com WhatsApp** | **Foco no Resultado:** Utiliza o canal de comunicação já existente da pizzaria, eliminando a necessidade de um backend/banco de dados complexo para processar a comanda. |
 | **Uso de Ícones (Font Awesome)** | **Usabilidade:** Ajuda na navegação e cria uma interface de pedidos moderna e familiar ao usuário. |
 
@@ -61,11 +61,11 @@ Para executar e inspecionar o código-fonte:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/raposoofc/nome-do-seu-repositorio](https://github.com/raposoofc/nome-do-seu-repositorio)
+    git clone [https://github.com/raposoofc/fornoalenha](https://github.com/raposoofc/fornoalenha)
     ```
 2.  **Abra o projeto:**
     ```bash
-    cd nome-do-seu-repositorio
+    cd fornoalenha
     ```
 3.  **Execute:**
     Abra o arquivo `index.html` diretamente em seu navegador.
