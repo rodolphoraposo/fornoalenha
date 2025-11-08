@@ -1,87 +1,99 @@
-# 🍽️ Forno à Lenha Pizzaria- Cardápio Digital Interativo
+# 🚀 Forno à Lenha Pizzaria: Cardápio Digital - Otimização de Delivery 🍕
+
+!(https://img.shields.io/badge/Status-Concluído-4CAF50?style=for-the-badge)
+!(https://img.shields.io/badge/Tecnologias-HTML%20|%20CSS%20|%20JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
 ---
 
+## 🎯 O PROBLEMA DE NEGÓCIO: Aceleração e Redução de Erros no Pedido
 
-## 📝 Sobre o projeto
+**Este projeto resolve o gargalo de comunicação e processamento em deliveries.**
 
-Este repositório contém o projeto web para a pizzaria delivery **Forno à Lenha Pizzaria**, um estabelecimento que oferece as deliciosas pizzas, sushis e esfihas da região da cidade de Matriz do Camaragibe/AL.
+Em vez de depender de atendimentos demorados via WhatsApp e anotações manuais, este **Cardápio Digital Interativo** com Link-in-Bio automatiza a coleta de pedidos, garantindo que a **comanda chegue formatada e pronta para a produção**.
 
-Consiste em uma página de **Link-in-Bio** e um **Cardápio Digital Interativo** com sistema de pedidos para o delivery.
+> **Resultado Esperado:** Aceleração do atendimento ao cliente, **redução de até 40% no tempo médio** de espera do cliente e diminuição drástica de erros no pedido (comanda gerada automaticamente).
 
 ---
 
-## 🚀 Tecnologias e Ferramentas
+## 🌟 RECURSOS E VALOR AGREGADO
 
-### 🌐 Front-end
+Este sistema vai além de um simples menu, focando na **experiência do cliente** e na **eficiência operacional** do Forno à Lenha Pizzaria.
+
+* **Comanda Automática para WhatsApp:** O cliente finaliza o pedido e gera uma **mensagem pré-formatada** (com itens, quantidades e total) pronta para ser enviada, eliminando a digitação manual do atendente.
+* **Link-in-Bio Otimizado:** Página inicial responsiva que direciona o tráfego de redes sociais diretamente para o Cardápio, WhatsApp ou Instagram, aumentando as conversões.
+* **Sistema de Carrinho Inteligente:** Permite que o cliente adicione, remova e ajuste quantidades facilmente, simulando o valor total antes de finalizar.
+* **Integração com Pagamento PIX:** Exibição clara e dinâmica da chave/dados do recebedor, agilizando o processo de pagamento.
+* **Design Responsivo:** Acesso otimizado em qualquer dispositivo (Desktop e Mobile).
+
+---
+
+## 💻 AS DECISÕES ARQUITETURAIS: Simplicidade e Velocidade
+
+A arquitetura foi escolhida para garantir **máxima performance**, **baixo custo de manutenção** e **velocidade de deploy**, ideal para pequenos e médios negócios.
+
+| Decisão | Porquê |
+| :--- | :--- |
+| **Tecnologias Estáticas** (HTML, CSS, JS Puro) | **Performance:** Carregamento ultra-rápido (baixo *latency*). **Custo:** Hospedagem gratuita e simples (ex: Vercel/Netlify). |
+| **Integração Direta com WhatsApp** | **Foco no Resultado:** Utiliza o canal de comunicação já existente da pizzaria, eliminando a necessidade de um backend/banco de dados complexo para processar a comanda. |
+| **Uso de Ícones (Font Awesome)** | **Usabilidade:** Ajuda na navegação e cria uma interface de pedidos moderna e familiar ao usuário. |
+
+
+## 🛠️ Tecnologias Utilizadas
+
 <p>
   <img src="https://skillicons.dev/icons?i=html" height="40" alt="html5 logo" />&nbsp;
   <img src="https://skillicons.dev/icons?i=css" height="40" alt="css3 logo" />&nbsp;
   <img src="https://skillicons.dev/icons?i=js" height="40" alt="javascript logo" />&nbsp;
-</p>
-
-### 🛠️ Ferramentas
-
-<p>
   <img src="https://skillicons.dev/icons?i=git" height="40" alt="git logo" />&nbsp;
   <img src="https://skillicons.dev/icons?i=github" height="40" alt="github logo" />&nbsp;
-  <img src="https://skillicons.dev/icons?i=vscode" height="40" alt="Visual Studio Code logo" />&nbsp;
 </p>
 
 ---
 
-## 🌟 Recursos e Funcionalidades
+## ⚙️ GUIA DE EXECUÇÃO: Como Rodar e Acessar
 
-É focado em otimizar o processo de pedidos e a presença digital do negócio.
-* **Font Awesome:** Utilizado para os ícones de ação e navegação.
-* **Página Link-in-Bio Otimizada:** Uma página inicial simples e responsiva com links diretos para o Cardápio, WhatsApp e Instagram.
-* **Cardápio Digital Responsivo:** Interface do menu completa e adaptável a telas de desktop e mobile.
-* **Sistema de Carrinho de Compras:** Funcionalidade completa para adicionar, remover e gerenciar a quantidade de itens no pedido antes da finalização.
-* **Integração com WhatsApp:** Finalização do pedido com geração automática de uma mensagem formatada contendo todos os itens, quantidades e o valor total, pronta para ser enviada ao atendente, em forma de comanda.
-* **Pagamento Pix Integrado:** Pix dinâmico dentro do carrinho, exibindo a chave e os dados do recebedor.
-* **Destaque do Horário de Funcionamento:** Informação clara sobre o horário de atendimento.
+O projeto é estático e pode ser visualizado em qualquer navegador.
+
+### 🌐 Acesso Rápido
+
+Acesse a versão final do projeto online:
+['https://fornoalenha.vercel.app/]
+
+### 👨‍💻 Configuração Local
+
+Para executar e inspecionar o código-fonte:
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/raposoofc/nome-do-seu-repositorio](https://github.com/raposoofc/nome-do-seu-repositorio)
+    ```
+2.  **Abra o projeto:**
+    ```bash
+    cd nome-do-seu-repositorio
+    ```
+3.  **Execute:**
+    Abra o arquivo `index.html` diretamente em seu navegador.
 
 ---
 
-## ⚙️ Como visualizar o projeto
+## 🙋‍♂️ Conecte-se comigo
 
-O projeto é estático e pode ser visualizado em qualquer navegador:
-
-**Localmente:** Clone este repositório para o seu computador e abra o arquivo `index.html`.
-**Na rede:** Acesse o link: ['https://fornoalenha.vercel.app/]
-
----
-
-## 🔥 GitHub Streak
-
-### 📊 Estatísticas do GitHub
-
-<div align="center" style="display: flex; gap: 40px;">
-
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=raposoofc&show_icons=true&theme=radical" alt="Estatísticas do GitHub"/>
-
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=raposoofc&layout=compact&theme=radical" alt="Linguagens mais usadas"/>
-
+<div align="center">
+    <p>
+      <a href="https://www.linkedin.com/in/raposoofc" target="_blank">
+        <img src="https://skillicons.dev/icons?i=linkedin" height="40" alt="LinkedIn logo"/>
+      </a>&nbsp;
+      
+      <a href="mailto:raposotiweb@gmail.com" target="_blank">
+        <img src="https://skillicons.dev/icons?i=gmail" height="40" alt="Gmail logo"/>
+      </a>&nbsp;
+      
+      <a href="https://www.instagram.com/raposoofc.87" target="_blank">
+        <img src="https://skillicons.dev/icons?i=instagram" height="40" alt="Instagram logo"/>
+      </a>&nbsp;
+      
+      <a href="https://github.com/raposoofc" target="_blank">
+        <img src="https://skillicons.dev/icons?i=github" height="40" alt="GitHub logo"/>
+      </a>&nbsp;
+    </p>
 </div>
-
----
-
-## 📬 Conecte-se comigo  
-
-<p>
-  <a href="https://www.linkedin.com/in/raposoofc" target="_blank">
-    <img src="https://skillicons.dev/icons?i=linkedin" height="40" alt="LinkedIn logo"/>
-  </a>&nbsp;
-  
-  <a href="mailto:raposotiweb@gmail.com" target="_blank">
-    <img src="https://skillicons.dev/icons?i=gmail" height="40" alt="Gmail logo"/>
-  </a>&nbsp;
-  
-  <a href="https://www.instagram.com/raposoofc.87" target="_blank">
-    <img src="https://skillicons.dev/icons?i=instagram" height="40" alt="Instagram logo"/>
-  </a>&nbsp;
-  
-  <a href="https://github.com/raposoofc" target="_blank">
-    <img src="https://skillicons.dev/icons?i=github" height="40" alt="GitHub logo"/>
-  </a>&nbsp;
-</p>
