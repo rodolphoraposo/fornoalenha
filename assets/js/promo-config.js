@@ -7,7 +7,7 @@ const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
     ativo: false, // true = mostrar popup | false = ocultar popup
-    imagem: "./assets/imgs/promo.jpg", // Caminho da imagem do popup
+    imagem: "./assets/imgs/card-garage.jpeg", // Caminho da imagem do popup
     produto: "Pizza Grande Especial", // Nome do produto em promoção
     precoOriginal: 59.90, // Preço original (será mostrado riscado)
     precoPromocional: 45.90, // Preço da promoção
