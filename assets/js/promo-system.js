@@ -157,7 +157,7 @@
     const economia = Math.max(0, precoOriginal - precoPromocional);
     const percentual = precoOriginal > 0 ? Math.round((economia / precoOriginal) * 100) : 0;
 
-    card.innerHTML = `
+    /*card.innerHTML = `
       ${item.badge ? `
       <div class="promo-card-badge">${item.badge}</div>` : ''}
         <img 
@@ -176,7 +176,7 @@
         ${percentual > 0 ? `<p style="color:#4ade80;font-size:.9rem;margin:0 0 12px 0;">💰 Economize ${percentual}%</p>` : ''}
         <button class="promo-card-btn" type="button">Adicionar ao Carrinho</button>
       </div>
-    `;
+    `;*/
 
     // Adicionar evento ao botão
     const btn = card.querySelector('.promo-card-btn');
