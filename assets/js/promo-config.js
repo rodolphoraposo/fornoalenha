@@ -6,7 +6,7 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: false, // true = mostrar popup | false = ocultar popup
+    ativo: true, // true = mostrar popup | false = ocultar popup
     imagem: "./assets/imgs/promocao/promosushi.jpeg", // Caminho da imagem do popup
     produto: "Sushidog Salmão Grelhado", // Nome do produto em promoção
     precoOriginal: 38.90, // Preço original (será mostrado riscado)
@@ -17,7 +17,7 @@ const PROMOCAO_CONFIG = {
 
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: {
-    ativo: false, // true = mostrar seção | false = ocultar seção
+    ativo: true, // true = mostrar seção | false = ocultar seção
     titulo: "🔥 Promoções da Semana",
     itens: [
       {
