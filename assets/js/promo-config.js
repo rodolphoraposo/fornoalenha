@@ -17,7 +17,7 @@ const PROMOCAO_CONFIG = {
 
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: {
-    ativo: true, // true = mostrar seção | false = ocultar seção
+    ativo: false, // true = mostrar seção | false = ocultar seção
     titulo: "🔥 Promoções da Semana",
     itens: [
       {
