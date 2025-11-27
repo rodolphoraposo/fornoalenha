@@ -89,7 +89,7 @@ Para executar e inspecionar o código-fonte:
 
 <div align="center">
     <p>
-      <a href="https://www.linkedin.com/in/raposoofc" target="_blank">
+      <a href="https://www.linkedin.com/in/rodolphoraposo" target="_blank">
         <img src="https://skillicons.dev/icons?i=linkedin" height="40" alt="LinkedIn logo"/>
       </a>&nbsp;
       
