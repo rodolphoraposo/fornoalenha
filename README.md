@@ -97,11 +97,11 @@ Para executar e inspecionar o código-fonte:
         <img src="https://skillicons.dev/icons?i=gmail" height="40" alt="Gmail logo"/>
       </a>&nbsp;
       
-      <a href="https://www.instagram.com/raposoofc.87" target="_blank">
+      <a href="https://www.instagram.com/rodolphoraposo" target="_blank">
         <img src="https://skillicons.dev/icons?i=instagram" height="40" alt="Instagram logo"/>
       </a>&nbsp;
       
-      <a href="https://github.com/raposoofc" target="_blank">
+      <a href="https://github.com/rodolphoraposo" target="_blank">
         <img src="https://skillicons.dev/icons?i=github" height="40" alt="GitHub logo"/>
       </a>&nbsp;
     </p>
