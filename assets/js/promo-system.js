@@ -1,60 +1,64 @@
 /*************************************************
- * SISTEMA DE PROMOÇÕES - IMPLEMENTAÇÃO
- * Fonte: :contentReference[oaicite:0]{index=0}
+ * SISTEMA DE PROMOÇÕES - FINAL
+ * Correção: Caminhos dinâmicos + Layout Padrão + Imagem Inteira
  *************************************************/
 
 (function initPromoSystem() {
-  // Aguardar DOM e configuração
+  // Aguardar DOM
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
 
+  // --- FUNÇÃO AUXILIAR PARA CORRIGIR CAMINHOS ---
+  // Se estivermos dentro da pasta /html/ (Cardápio),
+  // trocamos "./assets/" por "../" para a imagem não quebrar.
+  function corrigirCaminhoImagem(caminhoOriginal) {
+    if (window.location.pathname.includes('/assets/html/')) {
+      return caminhoOriginal.replace('./assets/', '../');
+    }
+    return caminhoOriginal; // Se estiver na Home, mantém original
+  }
+
   function init() {
     if (typeof PROMOCAO_CONFIG === 'undefined') {
-      console.warn('PROMOCAO_CONFIG não encontrada. Sistema de promoções desabilitado.');
+      console.warn('PROMOCAO_CONFIG não encontrada.');
       return;
     }
-
     initPopupPromocional();
     initSecaoPromocoes();
     initNavLinkPromocoes();
   }
 
   /*************************************************
-   * POP-UP PROMOCIONAL (somente na Home)
+   * POP-UP PROMOCIONAL (Home)
    *************************************************/
   function initPopupPromocional() {
     const config = PROMOCAO_CONFIG.popup;
-
-    // Não exibir popup em páginas internas (ex.: /assets/html/cardapio.html)
+    
+    // Se estiver no cardápio, não mostra popup (regra original)
     if (window.location.pathname.includes('/assets/html/')) return;
 
-    if (!config || !config.ativo) {
-      // console.log('Pop-up promocional desativado');
-      return;
-    }
+    if (!config || !config.ativo) return;
 
-    // Verificar se já foi mostrado nesta sessão
-    // if (sessionStorage.getItem('forno_popup_mostrado') === 'true') {
-    //   return;
-    // }
+    // Verificar se já mostrou (opcional, descomente se quiser ativar)
+    // if (sessionStorage.getItem('forno_popup_mostrado') === 'true') return;
 
-    // Criar estrutura do pop-up
     const overlay = document.createElement('div');
     overlay.id = 'promo-popup-overlay';
+    
+    // Aqui usamos o config.imagem direto, pois na Home o caminho ./assets funciona
     overlay.innerHTML = `
       <div class="promo-popup-card">
-        <button class="promo-popup-close" aria-label="Fechar" title="Fechar">✖</button>
+        <button class="promo-popup-close" aria-label="Fechar">✖</button>
         <div class="promo-popup-content">
           <div class="promo-popup-image-wrapper">
             ${config.badge ? `<div class="promo-popup-badge">${config.badge}</div>` : ''}
             <img 
               src="${config.imagem}" 
-              alt="${config.produto || 'Promoção'}"
+              alt="${config.produto}"
               class="promo-popup-image"
-              onerror="this.src='./assets/imgs/fornoalenha.webp'"
             />
             <div class="promo-popup-footer">
               <button class="promo-popup-btn" type="button">${config.rotuloCTA || 'Pedir agora'}</button>
@@ -79,29 +83,10 @@
     overlay.addEventListener('click', (e) => { if (e.target === overlay) fecharPopup(); });
 
     btnPedir.addEventListener('click', () => {
-      // Tenta adicionar ao carrinho se as funções existirem nesta página
-      let conseguiuAdicionar = false;
-      if (typeof addToCart === 'function') {
-        addToCart(
-          config.produto,
-          Number(config.precoPromocional),
-          1,
-          { tipo: 'promocao', descricao: config.descricao || '' }
-        );
-        conseguiuAdicionar = true;
-      }
-
-      fecharPopup();
-
-      if (conseguiuAdicionar && typeof openCart === 'function') {
-        setTimeout(() => openCart(), 400);
-      } else {
-        // Sem carrinho na Home → vai para o Cardápio com a "bandeirinha" ?promo=1
-        window.location.href = './assets/html/cardapio.html?promo=1#secao-promocoes';
-      }
+      // Redireciona para o cardápio ativando a promo
+      window.location.href = './assets/html/cardapio.html?promo=1#secao-promocoes';
     });
 
-    // Mostrar popup após 1 segundo
     setTimeout(() => {
       overlay.classList.add('show');
       document.body.classList.add('lock-scroll');
@@ -109,98 +94,83 @@
   }
 
   /*************************************************
-   * SEÇÃO DE PROMOÇÕES NO CARDÁPIO
+   * SEÇÃO DE PROMOÇÕES (Cardápio)
    *************************************************/
   function initSecaoPromocoes() {
     const config = PROMOCAO_CONFIG.secao;
+    // Validações básicas
+    if (!config || !config.ativo || !Array.isArray(config.itens) || config.itens.length === 0) return;
 
-    if (!config || !config.ativo || !Array.isArray(config.itens) || config.itens.length === 0) {
-      // console.log('Seção de promoções desativada ou sem itens');
-      return;
-    }
-
-    // Encontrar container principal (após o header, antes das pizzas)
+    // Só roda se tiver onde inserir
     const container = document.querySelector('.container');
     const pizzasSection = document.getElementById('pizzas');
+    if (!container || !pizzasSection) return;
 
-    if (!container || !pizzasSection) {
-      console.warn('Container ou seção de pizzas não encontrada');
-      return;
-    }
-
-    // Criar seção de promoções
+    // Criar estrutura padrão (h1 + div.cards)
     const secao = document.createElement('section');
     secao.id = 'secao-promocoes';
-    secao.className = 'secao';
+    secao.className = 'secao'; 
     secao.innerHTML = `
       <h1>${config.titulo || '🔥 Promoções'}</h1>
-      <div class="promo-cards-grid" id="promo-cards-container"></div>
+      <div class="cards" id="promo-cards-container"></div>
     `;
 
-    // Inserir antes da seção de pizzas
     container.insertBefore(secao, pizzasSection);
 
-    // Renderizar cards de promoção
     const cardsContainer = secao.querySelector('#promo-cards-container');
+    
     config.itens.forEach((item) => {
-      const card = criarCardPromocao(item);
+      // Aqui chamamos a função que corrige o caminho da imagem
+      const card = criarCardPromocaoPadrao(item);
       cardsContainer.appendChild(card);
     });
   }
 
-  function criarCardPromocao(item) {
+  function criarCardPromocaoPadrao(item) {
     const card = document.createElement('div');
-    card.className = 'promo-card-item';
+    card.className = 'card';
+
+    // 1. Corrige o caminho da imagem dinamicamente
+    const imgPath = corrigirCaminhoImagem(item.imagem);
 
     const precoOriginal = Number(item.precoOriginal || 0);
     const precoPromocional = Number(item.precoPromocional || 0);
-    const economia = Math.max(0, precoOriginal - precoPromocional);
-    const percentual = precoOriginal > 0 ? Math.round((economia / precoOriginal) * 100) : 0;
+    const precoFormatado = precoPromocional.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    const originalFormatado = precoOriginal.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 
-    /*card.innerHTML = `
-      ${item.badge ? `
-      <div class="promo-card-badge">${item.badge}</div>` : ''}
-        <img 
-          src="${item.imagem}" 
-          alt="${item.nome || 'Promoção'}"
-          class="promo-card-image"
-          onerror="this.src='../imgs/promocao/promosushi.jpeg'"
-        />
-      <div class="promo-card-body">
-        <h3 class="promo-card-title">${item.nome || ''}</h3>
-        ${item.descricao ? `<p class="promo-card-desc">${item.descricao}</p>` : ''}
-        <div class="promo-card-prices">
-          ${precoOriginal > 0 ? `<span class="promo-card-price-old">De R$ ${precoOriginal.toFixed(2).replace('.', ',')}</span>` : ''}
-          <span class="promo-card-price-new">R$ ${precoPromocional.toFixed(2).replace('.', ',')}</span>
-        </div>
-        ${percentual > 0 ? `<p style="color:#4ade80;font-size:.9rem;margin:0 0 12px 0;">💰 Economize ${percentual}%</p>` : ''}
-        <button class="promo-card-btn" type="button">Adicionar ao Carrinho</button>
+    // 2. Monta o HTML com object-fit: contain e layout padrão
+    card.innerHTML = `
+      <img 
+        class="card-img" 
+        src="${imgPath}" 
+        alt="${item.nome}" 
+        loading="lazy" 
+        style="object-fit: contain;"
+      >
+      <h3>${item.nome}
+          ${item.badge ? `<small style="background:var(--acc); color:#000; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:6px; vertical-align:middle;">${item.badge}</small>` : ''}
+      </h3>
+      
+      ${item.descricao ? `<p>${item.descricao}</p>` : '<p class="muted">Promoção especial.</p>'}
+      
+      <div style="margin-top:auto;">
+        ${precoOriginal > precoPromocional ? `<span style="text-decoration: line-through; color: var(--muted); font-size: 0.85em; display: block;">R$ ${originalFormatado}</span>` : ''}
+        <span class="price">R$ ${precoFormatado}</span>
       </div>
-    `;*/
+      
+      <button class="btn btn-add btn-primary" style="margin-top:8px; width:100%;">Adicionar</button>
+    `;
 
-    // Adicionar evento ao botão
-    const btn = card.querySelector('.promo-card-btn');
-    btn.addEventListener('click', () => {
+    // Evento adicionar
+    card.querySelector('.btn-add').addEventListener('click', () => {
       if (typeof addToCart === 'function') {
         addToCart(
           item.nome,
-          Number(item.precoPromocional),
+          precoPromocional,
           1,
           { tipo: 'promocao', descricao: item.descricao || '' }
         );
-
-        // Feedback visual
-        const oldText = btn.textContent;
-        btn.textContent = '✓ Adicionado!';
-        btn.style.background = '#4ade80';
-        setTimeout(() => {
-          btn.textContent = oldText;
-          btn.style.background = '';
-        }, 1200);
-
-        if (typeof openCart === 'function') {
-          setTimeout(() => openCart(), 300);
-        }
+        if (typeof openCart === 'function') openCart();
       }
     });
 
@@ -208,47 +178,37 @@
   }
 
   /*************************************************
-   * LINK DE PROMOÇÕES NO NAV (Cardápio)
+   * LINK NAV
    *************************************************/
   function initNavLinkPromocoes() {
     const config = PROMOCAO_CONFIG.secao;
     if (!config || !config.ativo) return;
 
     const mainNav = document.querySelector('.main-nav');
-    if (!mainNav) return;
+    if (!mainNav || mainNav.querySelector('[data-target="promocoes"]')) return;
 
-    // Evitar duplicidade
-    if (mainNav.querySelector('[data-target="promocoes"]')) return;
-
-    // Criar link de promoções
     const link = document.createElement('a');
-    link.className = 'nav-link nav-link-promo';
+    link.className = 'nav-link';
     link.href = '#secao-promocoes';
-    link.setAttribute('data-target', 'promocoes');
-    link.setAttribute('title', 'Promoções');
+    link.dataset.target = 'promocoes';
+    link.title = 'Promoções';
     link.innerHTML = `🔥<span>Promoções</span>`;
 
-    // Inserir como primeiro item do nav
     mainNav.insertBefore(link, mainNav.firstChild);
 
-    // Scroll suave e controle de estado
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const secao = document.getElementById('secao-promocoes');
       if (!secao) return;
+      
+      const headerOffset = 100;
+      const elementPosition = secao.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
 
-      secao.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      // Atualizar classe ativa
       document.querySelectorAll('.main-nav .nav-link').forEach(n => n.classList.remove('active'));
       link.classList.add('active');
-
-      // Fechar carrinho se estiver aberto
-      const cartDrawer = document.getElementById('cart');
-      if (cartDrawer && cartDrawer.classList.contains('open')) {
-        cartDrawer.classList.remove('open');
-        document.body.classList.remove('lock-scroll');
-      }
     });
   }
 

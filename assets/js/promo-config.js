@@ -6,46 +6,44 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: true, // true = mostrar popup | false = ocultar popup
-    imagem: "./assets/imgs/promocao/promosushi.jpeg", // Caminho da imagem do popup
-    produto: "Sushidog Salmão Grelhado", // Nome do produto em promoção
-    precoOriginal: 38.90, // Preço original (será mostrado riscado)
-    precoPromocional: 31.90, // Preço da promoção
-    descricao: "Salmão grelhado com molho especial, clássico da casa!", // Descrição da promoção
-    badge: "PROMOÇÃO", // Texto do badge (ex: "50% OFF", "PROMOÇÃO", etc)
+    ativo: true,
+    // Ajuste do caminho: '../imgs/' em vez de './assets/imgs/'
+    imagem: "./assets/imgs/promocao/promotemaki.jpeg", 
+    produto: "Temaki Salmão Grelhado",
+    precoOriginal: 38.90,
+    precoPromocional: 31.90,
+    descricao: "Salmão grelhado com molho especial, clássico da casa!",
+    badge: "PROMOÇÃO",
   },
 
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: {
-    ativo: false, // true = mostrar seção | false = ocultar seção
+    ativo: true,
     titulo: "🔥 Promoções da Semana",
     itens: [
       {
         nome: "Temaki Salmão Grelhado",
+        // Ajuste do caminho aqui também
         imagem: "./assets/imgs/promocao/promotemaki.jpeg",
         descricao: "Temaki de salmão grelhado com molho especial.",
-        precoOriginal: 120.00,
-        precoPromocional: 89.90,
-        badge: "COMBO"
+        precoOriginal: 37.90,
+        precoPromocional: 31.90,
+        badge: "PROMOÇÃO"
       },
       {
         nome: "Sushidog Salmão Grelhado",
+        // Ajuste do caminho aqui também
         imagem: "./assets/imgs/promocao/promosushi.jpeg",
         descricao: "Salmão grelhado com molho especial, clássico da casa!",
         precoOriginal: 38.90,
         precoPromocional: 31.90,
         badge: "PROMOÇÃO"
       }
-      // Adicione mais promoções aqui se desejar
     ]
   }
 };
 
-/*************************************************
- * NÃO EDITE DAQUI PARA BAIXO
- * (A menos que saiba o que está fazendo)
- *************************************************/
-
+// ... (O restante do código de salvar/carregar permanece igual) ...
 // Salvar configuração no localStorage
 function salvarConfigPromocao() {
   try {
@@ -55,7 +53,6 @@ function salvarConfigPromocao() {
   }
 }
 
-// Carregar configuração do localStorage
 function carregarConfigPromocao() {
   try {
     const saved = localStorage.getItem('forno_promo_config');
@@ -68,10 +65,8 @@ function carregarConfigPromocao() {
   }
 }
 
-// Inicializar
 carregarConfigPromocao();
 
-// Exportar para uso global
 if (typeof window !== 'undefined') {
   window.PROMOCAO_CONFIG = PROMOCAO_CONFIG;
   window.salvarConfigPromocao = salvarConfigPromocao;
