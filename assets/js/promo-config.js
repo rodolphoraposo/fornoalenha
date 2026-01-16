@@ -6,7 +6,7 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: true,
+    ativo: false,
     // Ajuste do caminho: '../imgs/' em vez de './assets/imgs/'
     imagem: "./assets/imgs/promocao/promotemaki.jpeg", 
     produto: "Temaki Salmão Grelhado",
@@ -18,7 +18,7 @@ const PROMOCAO_CONFIG = {
 
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: {
-    ativo: true,
+    ativo: false,
     titulo: "🔥 Promoções da Semana",
     itens: [
       {
