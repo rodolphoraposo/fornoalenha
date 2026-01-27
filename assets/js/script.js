@@ -28,8 +28,8 @@ const SABORES = {
   ],
   Especial: [
     { name: "Frango com Catupiry", imagePath: "../imgs/pizzas/frangocatupiry.webp" },
-    { name: "Carne de Sol", imagePath: "../imgs/pizzas/carnedesol.webp" },
-    { name: "Nordestina", imagePath: "../imgs/pizzas/nordestina.webp" },
+    // { name: "Carne de Sol", imagePath: "../imgs/pizzas/carnedesol.webp" },
+    // { name: "Nordestina", imagePath: "../imgs/pizzas/nordestina.webp" },
     { name: "Camarão", imagePath: "../imgs/pizzas/camarao.webp" },
     { name: "Portuguesa", imagePath: "../imgs/pizzas/portuguesa.webp" },
     { name: "Lombo Canadense", imagePath: "../imgs/pizzas/lombocanadense.webp" },

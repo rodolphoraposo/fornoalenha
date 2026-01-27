@@ -6,9 +6,9 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: false,
+    ativo: true,
     // Ajuste do caminho: '../imgs/' em vez de './assets/imgs/'
-    imagem: "./assets/imgs/promocao/promotemaki.jpeg", 
+    imagem: "./assets/imgs/promocao/promosushi.jpeg", 
     produto: "Temaki Salmão Grelhado",
     precoOriginal: 38.90,
     precoPromocional: 31.90,
@@ -18,7 +18,7 @@ const PROMOCAO_CONFIG = {
 
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: {
-    ativo: false,
+    ativo: true,
     titulo: "🔥 Promoções da Semana",
     itens: [
       {
