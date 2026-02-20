@@ -32,7 +32,7 @@ const SABORES = {
     // { name: "Nordestina", imagePath: "../imgs/pizzas/nordestina.webp" },
     { name: "Camarão", imagePath: "../imgs/pizzas/camarao.webp" },
     { name: "Portuguesa", imagePath: "../imgs/pizzas/portuguesa.webp" },
-    // { name: "Lombo Canadense", imagePath: "../imgs/pizzas/lombocanadense.webp" },
+    { name: "Lombo Canadense", imagePath: "../imgs/pizzas/lombocanadense.webp" },
     { name: "Quatro Queijos", imagePath: "../imgs/pizzas/quatroqueijos.webp" },
     { name: "Bacon", imagePath: "../imgs/pizzas/bacon.webp" },
     { name: "Atum", imagePath: "../imgs/pizzas/atum.webp" },
