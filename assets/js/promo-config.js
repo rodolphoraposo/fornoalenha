@@ -7,7 +7,6 @@ const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
     ativo: true,
-    // Ajuste do caminho: '../imgs/' em vez de './assets/imgs/'
     imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
     produto: "Promoção Esfihas - 10unidades",
     precoOriginal: 39.90,
@@ -17,13 +16,13 @@ const PROMOCAO_CONFIG = {
   },
 
   // ===== SEÇÃO NO CARDÁPIO =====
-  secao: {
-    ativo: true,
-    titulo: "🔥 Promoções de Hoje",
-    itens: [
+  secao: [
+    {
+      ativo: true,
+      titulo: "🔥 Promoções de Hoje",
+      itens: [
         {
           nome: "Pedido Mínimo 10 unidades",
-          // Ajuste do caminho aqui também
           imagem: "./assets/imgs/promocao/promoesfihas.jpeg",
           descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
           precoOriginal: 39.90,
@@ -32,31 +31,30 @@ const PROMOCAO_CONFIG = {
         }
       ]
   },
-      {
+  {
     ativo: false,
     titulo: "🔥 Promoções da Semana",
     itens: [
-      {
-        nome: "Temaki Salmão Grelhado",
-        // Ajuste do caminho aqui também
-        imagem: "./assets/imgs/promocao/promotemaki.jpeg",
-        descricao: "Temaki de salmão grelhado com molho especial.",
-        precoOriginal: 37.90,
-        precoPromocional: 31.90,
-        badge: "PROMOÇÃO"
-      },
-      {
-        nome: "Sushidog Salmão Grelhado",
-        // Ajuste do caminho aqui também
-        imagem: "./assets/imgs/promocao/promosushi.jpeg",
-        descricao: "Salmão grelhado com molho especial, clássico da casa!",
-        precoOriginal: 38.90,
-        precoPromocional: 31.90,
-        badge: "PROMOÇÃO"
-      }
-    ]
-  }
-]
+        {
+          nome: "Temaki Salmão Grelhado",
+          imagem: "./assets/imgs/promocao/promotemaki.jpeg",
+          descricao: "Temaki de salmão grelhado com molho especial.",
+          precoOriginal: 37.90,
+          precoPromocional: 31.90,
+          badge: "PROMOÇÃO"
+        },
+        {
+          nome: "Sushidog Salmão Grelhado",
+          imagem: "./assets/imgs/promocao/promosushi.jpeg",
+          descricao: "Salmão grelhado com molho especial, clássico da casa!",
+          precoOriginal: 38.90,
+          precoPromocional: 31.90,
+          badge: "PROMOÇÃO"
+        }
+      ]
+    }
+  ]
+};
 
 // ... (O restante do código de salvar/carregar permanece igual) ...
 // Salvar configuração no localStorage
