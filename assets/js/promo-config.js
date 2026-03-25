@@ -8,16 +8,29 @@ const PROMOCAO_CONFIG = {
   popup: {
     ativo: false,
     // Ajuste do caminho: '../imgs/' em vez de './assets/imgs/'
-    imagem: "./assets/imgs/promocao/promosushi.jpeg", 
+    imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
     produto: "Temaki Salmão Grelhado",
-    precoOriginal: 38.90,
-    precoPromocional: 31.90,
-    descricao: "Salmão grelhado com molho especial, clássico da casa!",
+    precoOriginal: 39.90,
+    precoPromocional: 19.00,
+    descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
     badge: "PROMOÇÃO",
   },
 
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: {
+    ativo: true,
+    titulo: "🔥 Promoções de Hoje",
+    itens: [
+      {
+        nome: "Pedido Mínimo 10 unidades",
+        // Ajuste do caminho aqui também
+        imagem: "./assets/imgs/promocao/promoesfihas.jpeg",
+        descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
+        precoOriginal: 39.90,
+        precoPromocional: 19.00,
+        badge: "PROMOÇÃO"
+      },
+      {
     ativo: false,
     titulo: "🔥 Promoções da Semana",
     itens: [
