@@ -6,7 +6,7 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: false,
+    ativo: true,
     // Ajuste do caminho: '../imgs/' em vez de './assets/imgs/'
     imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
     produto: "Temaki Salmão Grelhado",
