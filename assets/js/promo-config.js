@@ -30,7 +30,8 @@ const PROMOCAO_CONFIG = {
           precoPromocional: 19.00,
           badge: "PROMOÇÃO"
         }
-      ],
+      ]
+  },
       {
     ativo: false,
     titulo: "🔥 Promoções da Semana",
@@ -55,7 +56,7 @@ const PROMOCAO_CONFIG = {
       }
     ]
   }
-};
+]
 
 // ... (O restante do código de salvar/carregar permanece igual) ...
 // Salvar configuração no localStorage
