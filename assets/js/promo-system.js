@@ -97,32 +97,34 @@
    * SEÇÃO DE PROMOÇÕES (Cardápio)
    *************************************************/
   function initSecaoPromocoes() {
-    const config = PROMOCAO_CONFIG.secao;
-    // Validações básicas
-    if (!config || !config.ativo || !Array.isArray(config.itens) || config.itens.length === 0) return;
-
-    // Só roda se tiver onde inserir
+    const secoes = PROMOCAO_CONFIG.secao;
+  
+    // ✅ Verifica se é array e filtra apenas as seções ativas com itens
+    if (!Array.isArray(secoes)) return;
+    const secoesAtivas = secoes.filter(s => s.ativo && Array.isArray(s.itens) && s.itens.length > 0);
+    if (secoesAtivas.length === 0) return;
+  
     const container = document.querySelector('.container');
     const pizzasSection = document.getElementById('pizzas');
     if (!container || !pizzasSection) return;
-
-    // Criar estrutura padrão (h1 + div.cards)
-    const secao = document.createElement('section');
-    secao.id = 'secao-promocoes';
-    secao.className = 'secao'; 
-    secao.innerHTML = `
-      <h1>${config.titulo || '🔥 Promoções'}</h1>
-      <div class="cards" id="promo-cards-container"></div>
-    `;
-
-    container.insertBefore(secao, pizzasSection);
-
-    const cardsContainer = secao.querySelector('#promo-cards-container');
-    
-    config.itens.forEach((item) => {
-      // Aqui chamamos a função que corrige o caminho da imagem
-      const card = criarCardPromocaoPadrao(item);
-      cardsContainer.appendChild(card);
+  
+    // ✅ Itera sobre cada seção ativa
+    secoesAtivas.forEach((config, index) => {
+      const secao = document.createElement('section');
+      secao.id = index === 0 ? 'secao-promocoes' : `secao-promocoes-${index}`;
+      secao.className = 'secao';
+      secao.innerHTML = `
+        <h1>${config.titulo || '🔥 Promoções'}</h1>
+        <div class="cards" id="promo-cards-container-${index}"></div>
+      `;
+  
+      container.insertBefore(secao, pizzasSection);
+  
+      const cardsContainer = secao.querySelector(`#promo-cards-container-${index}`);
+      config.itens.forEach((item) => {
+        const card = criarCardPromocaoPadrao(item);
+        cardsContainer.appendChild(card);
+      });
     });
   }
 
@@ -181,35 +183,37 @@
    * LINK NAV
    *************************************************/
   function initNavLinkPromocoes() {
-    const config = PROMOCAO_CONFIG.secao;
-    if (!config || !config.ativo) return;
+  const secoes = PROMOCAO_CONFIG.secao;
 
-    const mainNav = document.querySelector('.main-nav');
-    if (!mainNav || mainNav.querySelector('[data-target="promocoes"]')) return;
+  // ✅ Só cria o link se houver ao menos uma seção ativa
+  if (!Array.isArray(secoes) || !secoes.some(s => s.ativo)) return;
 
-    const link = document.createElement('a');
-    link.className = 'nav-link';
-    link.href = '#secao-promocoes';
-    link.dataset.target = 'promocoes';
-    link.title = 'Promoções';
-    link.innerHTML = `🔥<span>Promoções</span>`;
+  const mainNav = document.querySelector('.main-nav');
+  if (!mainNav || mainNav.querySelector('[data-target="promocoes"]')) return;
 
-    mainNav.insertBefore(link, mainNav.firstChild);
+  const link = document.createElement('a');
+  link.className = 'nav-link';
+  link.href = '#secao-promocoes';
+  link.dataset.target = 'promocoes';
+  link.title = 'Promoções';
+  link.innerHTML = `🔥<span>Promoções</span>`;
 
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const secao = document.getElementById('secao-promocoes');
-      if (!secao) return;
-      
-      const headerOffset = 100;
-      const elementPosition = secao.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-    
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  mainNav.insertBefore(link, mainNav.firstChild);
 
-      document.querySelectorAll('.main-nav .nav-link').forEach(n => n.classList.remove('active'));
-      link.classList.add('active');
-    });
-  }
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const secao = document.getElementById('secao-promocoes');
+    if (!secao) return;
+
+    const headerOffset = 100;
+    const elementPosition = secao.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+
+    document.querySelectorAll('.main-nav .nav-link').forEach(n => n.classList.remove('active'));
+    link.classList.add('active');
+  });
+}
 
 })();
