@@ -8,7 +8,7 @@ const PROMOCAO_CONFIG = {
   popup: {
     ativo: true,
     imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
-    produto: "Promoção Esfihas - 10unidades (Coloque nas observações os sabores desejados)",
+    produto: "Promoção Esfihas - 10unidades <br>(Coloque nas observações os sabores desejados)",
     precoOriginal: 39.90,
     precoPromocional: 19.00,
     descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
@@ -22,7 +22,7 @@ const PROMOCAO_CONFIG = {
       titulo: "🔥 Promoções de Hoje",
       itens: [
         {
-          nome: "Pedido Mínimo 10 unidades",
+          nome: "Pedido Mínimo 10 unidades <br>(Coloque nas observações os sabores desejados)",
           imagem: "./assets/imgs/promocao/promoesfihas.jpeg",
           descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
           precoOriginal: 39.90,
