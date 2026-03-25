@@ -9,7 +9,7 @@ const PROMOCAO_CONFIG = {
     ativo: true,
     // Ajuste do caminho: '../imgs/' em vez de './assets/imgs/'
     imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
-    produto: "Temaki Salmão Grelhado",
+    produto: "Promoção Esfihas - 10unidades",
     precoOriginal: 39.90,
     precoPromocional: 19.00,
     descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
@@ -21,15 +21,15 @@ const PROMOCAO_CONFIG = {
     ativo: true,
     titulo: "🔥 Promoções de Hoje",
     itens: [
-      {
-        nome: "Pedido Mínimo 10 unidades",
-        // Ajuste do caminho aqui também
-        imagem: "./assets/imgs/promocao/promoesfihas.jpeg",
-        descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
-        precoOriginal: 39.90,
-        precoPromocional: 19.00,
-        badge: "PROMOÇÃO"
-      }
+        {
+          nome: "Pedido Mínimo 10 unidades",
+          // Ajuste do caminho aqui também
+          imagem: "./assets/imgs/promocao/promoesfihas.jpeg",
+          descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
+          precoOriginal: 39.90,
+          precoPromocional: 19.00,
+          badge: "PROMOÇÃO"
+        }
       ],
       {
     ativo: false,
