@@ -29,7 +29,8 @@ const PROMOCAO_CONFIG = {
         precoOriginal: 39.90,
         precoPromocional: 19.00,
         badge: "PROMOÇÃO"
-      },
+      }
+      ],
       {
     ativo: false,
     titulo: "🔥 Promoções da Semana",
