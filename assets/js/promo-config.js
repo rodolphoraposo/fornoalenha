@@ -7,7 +7,7 @@ const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
     ativo: true,
-    imagem: "./assets/imgs/promocao/promo-hoje.jpeg", 
+    imagem: "./assets/imgs/promocao/promo-hoje.png", 
     produto: "Pizza Grande - Sabores Tradicionais",
     precoOriginal: 47.90,
     precoPromocional: 39.00,
