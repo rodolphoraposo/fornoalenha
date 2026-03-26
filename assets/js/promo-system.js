@@ -31,75 +31,70 @@
     initNavLinkPromocoes();
   }
 
-  /*************************************************
-   * POP-UP PROMOCIONAL (Home)
-   *************************************************/
-  function initPopupPromocional() {
-    const config = PROMOCAO_CONFIG.popup;
-    
-    // Se estiver no cardápio, não mostra popup (regra original)
-    if (window.location.pathname.includes('/assets/html/')) return;
+/*************************************************
+ * POP-UP PROMOCIONAL (Home)
+ *************************************************/
+function initPopupPromocional() {
+  const config = PROMOCAO_CONFIG.popup;
 
-    if (!config || !config.ativo) return;
+  // Se estiver no cardápio, não mostra popup (regra original)
+  if (window.location.pathname.includes('/assets/html/')) return;
+  if (!config || !config.ativo) return;
 
-    // Verificar se já mostrou (opcional, descomente se quiser ativar)
-    // if (sessionStorage.getItem('forno_popup_mostrado') === 'true') return;
+  // Verificar se já mostrou (opcional, descomente se quiser ativar)
+  // if (sessionStorage.getItem('forno_popup_mostrado') === 'true') return;
 
-    const overlay = document.createElement('div');
-    overlay.id = 'promo-popup-overlay';
-    
-    // Aqui usamos o config.imagem direto, pois na Home o caminho ./assets funciona
-    overlay.innerHTML = `
-      <div class="promo-popup-card">
-        <button class="promo-popup-close" aria-label="Fechar">✖</button>
-        <div class="promo-popup-content">
-          <div class="promo-popup-image-wrapper">
-            ${config.badge ? `<div class="promo-popup-badge">${config.badge}</div>` : ''}
-            <img 
-              src="${config.imagem}" 
-              alt="${config.produto}"
-              class="promo-popup-image"
-            />
-            ${config.mostrarCTA !== false ? `
-              <div class="promo-popup-footer">
-                <button class="promo-popup-btn" type="button">${config.rotuloCTA || 'Pedir agora'}</button>
-              </div>
-            ` : ''}
-          </div>
+  const overlay = document.createElement('div');
+  overlay.id = 'promo-popup-overlay';
+
+  // Aqui usamos o config.imagem direto, pois na Home o caminho ./assets funciona
+  overlay.innerHTML = `
+    <div class="promo-popup-card">
+      <button class="promo-popup-close" aria-label="Fechar">✖</button>
+      <div class="promo-popup-content">
+        <div class="promo-popup-image-wrapper">
+          ${config.badge ? `<div class="promo-popup-badge">${config.badge}</div>` : ''}
+          <img 
+            src="${config.imagem}" 
+            alt="${config.produto}"
+            class="promo-popup-image"
+          />
+          ${config.mostrarCTA !== false ? `
+            <div class="promo-popup-footer">
+              <button class="promo-popup-btn" type="button">${config.rotuloCTA || 'Pedir agora'}</button>
+            </div>
+          ` : ''}
         </div>
       </div>
-    `;
-    document.body.appendChild(overlay);
+    </div>
+  `;
 
-    const btnClose = overlay.querySelector('.promo-popup-close');
-    const btnPedir = overlay.querySelector('.promo-popup-btn');
+  document.body.appendChild(overlay);
 
-    if (btnPedir) {
-      btnPedir.addEventListener('click', () => {
-        window.location.href = './assets/html/cardapio.html?promo=1#secao-promocoes';
-      });
-    }
-    
-    function fecharPopup() {
-      overlay.classList.remove('show');
-      sessionStorage.setItem('forno_popup_mostrado', 'true');
-      document.body.classList.remove('lock-scroll');
-      setTimeout(() => overlay.remove(), 300);
-    }
+  const btnClose = overlay.querySelector('.promo-popup-close');
+  const btnPedir = overlay.querySelector('.promo-popup-btn');
 
-    btnClose.addEventListener('click', fecharPopup);
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) fecharPopup(); });
+  function fecharPopup() {
+    overlay.classList.remove('show');
+    sessionStorage.setItem('forno_popup_mostrado', 'true');
+    document.body.classList.remove('lock-scroll');
+    setTimeout(() => overlay.remove(), 300);
+  }
 
+  btnClose.addEventListener('click', fecharPopup);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) fecharPopup(); });
+
+  if (btnPedir) {
     btnPedir.addEventListener('click', () => {
-      // Redireciona para o cardápio ativando a promo
       window.location.href = './assets/html/cardapio.html?promo=1#secao-promocoes';
     });
-
-    setTimeout(() => {
-      overlay.classList.add('show');
-      document.body.classList.add('lock-scroll');
-    }, 1000);
   }
+
+  setTimeout(() => {
+    overlay.classList.add('show');
+    document.body.classList.add('lock-scroll');
+  }, 1000);
+}
 
   /*************************************************
    * SEÇÃO DE PROMOÇÕES (Cardápio)
