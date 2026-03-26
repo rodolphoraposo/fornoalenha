@@ -6,14 +6,23 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: false,
-    imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
-    produto: "Promoção Esfihas - 10unidades <br> (Coloque nas observações os sabores desejados das 10 unidades.)",
-    precoOriginal: 39.90,
-    precoPromocional: 19.00,
-    descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
+    ativo: true,
+    imagem: "./assets/imgs/promocao/promo-hoje.jpeg", 
+    produto: "Pizza Grande - Sabores Tradicionais",
+    precoOriginal: 47.90,
+    precoPromocional: 39.00,
+    descricao: "Todos os sabores de pizzas grandes tradicionais!",
     badge: "PROMOÇÃO",
   },
+  // popup: {
+  //   ativo: true,
+  //   imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
+  //   produto: "Promoção Esfihas - 10unidades <br> (Coloque nas observações os sabores desejados das 10 unidades.)",
+  //   precoOriginal: 39.90,
+  //   precoPromocional: 19.00,
+  //   descricao: "10 unidades - Apenas sabores tradicionais (Mista, Frango, Mussarela, Calabresa e Marguerita.",
+  //   badge: "PROMOÇÃO",
+  // },
 
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: [
