@@ -6,7 +6,7 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: true,
+    ativo: false,
     imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
     produto: "Promoção Esfihas - 10unidades <br> (Coloque nas observações os sabores desejados das 10 unidades.)",
     precoOriginal: 39.90,
@@ -18,7 +18,7 @@ const PROMOCAO_CONFIG = {
   // ===== SEÇÃO NO CARDÁPIO =====
   secao: [
     {
-      ativo: true,
+      ativo: false,
       titulo: "🔥 Promoções de Hoje",
       itens: [
         {
