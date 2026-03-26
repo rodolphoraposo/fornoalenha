@@ -7,6 +7,7 @@ const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
     ativo: true,
+    mostrarCTA: false, // 👈 false oculta, true exibe
     imagem: "./assets/imgs/promocao/promo-hoje.png", 
     produto: "Pizza Grande - Sabores Tradicionais",
     precoOriginal: 47.90,
@@ -16,6 +17,7 @@ const PROMOCAO_CONFIG = {
   },
   // popup: {
   //   ativo: true,
+  //   mostrarCTA: false, // 👈 false oculta, true exibe
   //   imagem: "./assets/imgs/promocao/promoesfihas.jpeg", 
   //   produto: "Promoção Esfihas - 10unidades <br> (Coloque nas observações os sabores desejados das 10 unidades.)",
   //   precoOriginal: 39.90,
