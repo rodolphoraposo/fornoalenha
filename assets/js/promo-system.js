@@ -74,6 +74,12 @@
     const btnClose = overlay.querySelector('.promo-popup-close');
     const btnPedir = overlay.querySelector('.promo-popup-btn');
 
+    if (btnPedir) {
+      btnPedir.addEventListener('click', () => {
+        window.location.href = './assets/html/cardapio.html?promo=1#secao-promocoes';
+      });
+    }
+    
     function fecharPopup() {
       overlay.classList.remove('show');
       sessionStorage.setItem('forno_popup_mostrado', 'true');
