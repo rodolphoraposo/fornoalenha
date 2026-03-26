@@ -60,9 +60,11 @@
               alt="${config.produto}"
               class="promo-popup-image"
             />
-            // <div class="promo-popup-footer">
-            //   <button class="promo-popup-btn" type="button">${config.rotuloCTA || 'Pedir agora'}</button>
-            // </div>
+            ${config.mostrarCTA !== false ? `
+              <div class="promo-popup-footer">
+                <button class="promo-popup-btn" type="button">${config.rotuloCTA || 'Pedir agora'}</button>
+              </div>
+            ` : ''}
           </div>
         </div>
       </div>
