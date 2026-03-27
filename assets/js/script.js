@@ -39,7 +39,6 @@ const SABORES = {
     { name: "Catupirela", imagePath: "../imgs/pizzas/catupirela.webp" }
   ],
   Doce: [
-    // { name: "Brigadeiro", imagePath: "../imgs/pizzas/brigadeiro.webp" },
     // { name: "M&M", imagePath: "../imgs/pizzas/m&m.webp" },
     { name: "Banana", imagePath: "../imgs/pizzas/banana.webp" },
     { name: "Romeu e Julieta", imagePath: "../imgs/pizzas/romeuejulieta.webp" }
