@@ -48,7 +48,6 @@ const SABORES = {
 const BORDAS = [
   { name: "Nenhuma", imagePath: "../imgs/bordas/nenhuma.png" },
   { name: "Mussarela", imagePath: "../imgs/bordas/mussarela.webp" },
-  { name: "Cheddar", imagePath: "../imgs/bordas/cheddar.webp" },
   { name: "Catupiry", imagePath: "../imgs/bordas/catupiry.webp" },
   { name: "Creme Cheese", imagePath: "../imgs/bordas/cremecheese.webp" },
   { name: "Chocolate", imagePath: "../imgs/bordas/chocolate.webp" }
