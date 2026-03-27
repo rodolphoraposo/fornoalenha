@@ -9,7 +9,7 @@ const PIX_KEY = "59.130.875/0001-50";
  * DADOS DO CARDÁPIO
  *************************************************/
 const PRECO_PIZZA = {
-  Tradicional: { Brotinho: 20.90, Média: 37.90, Grande: 39.90 },
+  Tradicional: { Brotinho: 20.90, Média: 37.90, Grande: 47.90 },
   Especial:    { Brotinho: 30.90, Média: 49.90, Grande: 59.90 },
   Doce:        { Brotinho: 25.90,  Média: 39.90, Grande: 49.90 }
 };
