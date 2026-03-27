@@ -6,7 +6,7 @@
 const PROMOCAO_CONFIG = {
   // ===== POP-UP DA TELA INICIAL =====
   popup: {
-    ativo: true,
+    ativo: false,
     mostrarCTA: false, // 👈 false oculta, true exibe
     imagem: "./assets/imgs/promocao/promo-hoje.png", 
     produto: "Pizza Grande - Sabores Tradicionais",
